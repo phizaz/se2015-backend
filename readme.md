@@ -6,6 +6,8 @@
 
 โดยเมื่อ fork ไปแล้ว แล้ว repo นี้มีการ update ก็สามารถ update repo ที่ fork ไปได้เหมือนกัน โดยการ[เพิ่ม remote repo ให้กับ repo ที่ fork ไป](http://stackoverflow.com/questions/3903817/pull-new-updates-from-original-github-repository-into-forked-github-repository) แล้วก็จะสามารถ pull update ของ repo นี้มาลง repo ส่วนตัวได้ตามปกติ
 
+หากจะติดตั้งอันนี้กับ Phizaz's Angular Seed ให้ fork และ clone repo นี้ไปยัง /api ของ Angular Seed (จะได้เข้าผ่าน /api ใน url ได้)
+
 การติดตั้ง Laravel สามารถอ่านได้จากเว็บไซต์ Laravel เอง แต่เนื่องจาก Laravel สามารถลงได้หลายวิธี (ในเว็บไซต์) ซึ่งในที่นี้ แนะนำให้ลงด้วย Vagrant เพราะว่าง่ายที่สุด และ Angular Seed ได้ config ไว้สำหรับอันนี้แล้ว (ไม่ต้องไปลง php, apache, mysql เอง)
 
 สำหรับคนสงสัยว่า Vagrant คืออะไร ผู้เขียนเองก็ไม่ค่อยรู้เรื่องเหมือนกัน แต่บอกได้ว่ามันมีความใกล้เคึยงกับ Docker อยู่เหมือนกัน แต่คิดว่ากลุ่มลูกค้าจะไม่เหมือนกัน Vagrant ต้องการสร้าง environment สำหรับ Develop แต่ว่า Docker จะเน้นไปที่การสร้าง environment สำหรับ  Product มากกว่า ซึ่งทั้งสองทำหน้าที่คล้่าย ๆ ก็คือสร้าง isolate environment เพื่อให้เราสามารถติดตั้งโปรแกรมจำนวนมากได้ผ่านคำสั่งเดียว โดยไม่สำคัญว่าเครื่องที่ติดตั้งนั้นมีอะไรอยู่ก่อนหรือเปล่า
