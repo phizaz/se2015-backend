@@ -24,33 +24,76 @@ class PatientController extends Controller
                                     ]);
       }
       
-      if($request->input('password')==null)
-          return response()->json(["success" => false,
-                                   "message" => 'please fill your password'
-                                  ]);
+      $error = [];
+      $personal_id = $request->input('personal_id');
+      $password = $request->input('password');
+      $firstname = $request->input('firstname');
+      $lastname = $request->input('lastname');
+      $birthdate = $request->input('birthdate');
+      $address = $request->input('address');
+      $gender = $request->input('gender');
+      $religion = $request->input('religion');
+      $nationality = $request->input('nationality');
+      $bloodtype = $request->input('bloodtype');
+      $status = $request->input('status');
+      $remark = $request->input('remark');
+      $priority = $request->input('priority');
+      
+      if($personal_id == null) 
+          $error[] = 'personal_id_not_found';
+      if($password == null) 
+          $error[] = 'password_id_not_found';
+      if($firstname == null)
+          $error[] = 'firstname_not_found';
+      if($lastname == null)
+          $error[] = 'lastname_not_found';
+      if($birthdate == null)
+          $error[] = 'birthdate_not_found';
+      if($address == null)
+          $error[] = 'address_not_found';
+      if($gender == null)
+          $error[] = 'gender_not_found';
+      if($religion == null)
+          $error[] = 'religion_not_found';
+      if($nationality == null)
+          $error[] = 'nationality_not_found';
+      if($bloodtype == null)
+          $error[] = 'bloodtype_not_found';
+      if($status == null)
+          $error[] = 'status_not_found';
+      if($remark == null)
+          $error[] = 'remark_not_found';
+      if($priority == null)
+          $error[] = 'priority_not_found';
+      
       
       $patient = new Patient;
-          
-      $patient->personal_id = $request->input('personal_id');
-      $patient->firstname = $request->input('firstname');
-      $patient->lastname = $request->input('lastname');
-      $patient->birthdate = $request->input('birthdate');
-      $patient->address = $request->input('address');
-      $patient->gender = $request->input('gender');
-      $patient->religion = $request->input('religion');
-      $patient->nationality = $request->input('nationality');
-      $patient->bloodtype = $request->input('bloodtype');
-      $patient->status = $request->input('status');
-      $patient->remark = $request->input('remark');
-      $patient->priority = $request->input('priority');
       
-      $patient->password = Hash::make($request->input('password'));
+      $patient->personal_id = $personal_id;
+      $patient->firstname = $firstname;
+      $patient->lastname = $lastname;
+      $patient->birthdate = $birthdate;
+      $patient->address = $address;
+      $patient->gender = $gender;
+      $patient->religion = $religion;
+      $patient->nationality = $nationality;
+      $patient->bloodtype = $bloodtype;
+      $patient->status = $status;
+      $patient->remark = $remark;
+      $patient->priority = $priority;
       
-      $patient->save();
-      
-      return response()->json(["success" => true,
+      $patient->password = Hash::make($password);
+      if(sizeof($error)==0) {
+        $patient->save();
+        return response()->json(["success" => true,
                               "data" => array($patient)
                               ]);
+      }
+      else {
+        return response()->json(["success" => false,
+                                  "message" => $error
+                                ]);
+      }
     }
     
 //----------------isExists--------------------------
