@@ -20,3 +20,4 @@ Route::post('/logout', 'UserController@logout');
 
 Route::post('/register', 'PatientController@register');
 Route::get('/username-exists','PatientController@isExists');
+Route::post('/register-employee','HospitalEmployeeController@RegisterEmployee');
