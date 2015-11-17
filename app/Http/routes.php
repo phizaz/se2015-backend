@@ -16,3 +16,5 @@ Route::get('/', 'HomeController@index');
 Route::post('/login', 'UserController@login');
 
 Route::post('/register', 'UserController@register');
+
+Route::post('/register-employee','HospitalEmployeeController@RegisterEmployee');
