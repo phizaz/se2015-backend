@@ -20,14 +20,18 @@ class PatientController extends Controller
       if(Patient::where('personal_id',$request->input('personal_id'))->first()) {
           return response()->json([
                                     "success" => false,
-                                    "message" => ['personal_id_exist']
+                                    "message" => ['this personal_id has been used']
                                     ]);
       }
+      
+      if($request->input('password')==null)
+          return response()->json(["success" => false,
+                                   "message" => 'please fill your password'
+                                  ]);
       
       $patient = new Patient;
           
       $patient->personal_id = $request->input('personal_id');
-      //$patient->password = $password;
       $patient->firstname = $request->input('firstname');
       $patient->lastname = $request->input('lastname');
       $patient->birthdate = $request->input('birthdate');
