@@ -15,9 +15,17 @@ class Patient extends Model implements  AuthenticatableContract,
                                         CanResetPasswordContract
 {
     use Authenticatable, Authorizable, CanResetPassword;
+    
+    protected $table = 'patients';
+    protected $fillable = ['personal_id', 'password'];
+//    protected $fillable = ['firstname', 'lastname', 'personal_id', 
+//                           'password','religion','address','birthdate',
+//                           'status','gender','nationality','bloodtype',
+//                           'remark','priority'];
+//    
+    public function getAuthPassword() {
+        return $this->password;
+    }
 
     protected $hidden = ['password', 'remember_token'];
-
-
-
 }

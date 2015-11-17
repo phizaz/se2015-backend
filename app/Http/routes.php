@@ -13,6 +13,10 @@
 
 Route::get('/', 'HomeController@index');
 
+Route:get('/is-login','UserController@islogin');
 Route::post('/login', 'UserController@login');
 
-Route::post('/register', 'UserController@register');
+Route::post('/logout', 'UserController@logout');
+
+Route::post('/register', 'PatientController@register');
+Route::get('/username-exists','PatientController@isExists');
