@@ -11,7 +11,7 @@ use App\HospitalEmployee;
 
 class HospitalEmployeeController extends Controller
 {
-    public function RegisterEmployee(Request $request){
+    public function registerEmployee(Request $request){
         $username = $request->input('username');
         $password = $request->input('password');
         $firstname = $request->input('firstname');
@@ -86,6 +86,17 @@ class HospitalEmployeeController extends Controller
             "success" => true,
             "data" => $Employee->toArray()
         ]);
+    }
+
+    public function usernameExist (Request $request){
+        $username = $request->input('username');
+
+        if(HospitalEmployee::where('username', $username)->first()){
+            return response()->json(["found" => true ]);
+        }else{
+            return response()->json(["found" => false ]);
+        }
 
     }
+
 }
