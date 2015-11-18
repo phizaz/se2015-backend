@@ -26,3 +26,7 @@ Route::get('/username-exists','PatientController@isExists');
 Route::post('/register-employee','HospitalEmployeeController@registerEmployee');
 
 Route::get('/register-employee/username-exists','HospitalEmployeeController@usernameExist');
+
+Route::post('/register-employee/uploadPhoto','HospitalEmployeeController@uploadPhoto');
+
+Route::get('/Doctor','DoctorController@doctor');

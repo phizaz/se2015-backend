@@ -96,7 +96,12 @@ class HospitalEmployeeController extends Controller
         }else{
             return response()->json(["found" => false ]);
         }
+    }
 
+    public function uploadPhoto (Request $request){
+        $employeeId = $request->input('emp_id');
+
+        
     }
 
 }
