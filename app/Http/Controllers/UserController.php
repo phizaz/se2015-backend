@@ -11,6 +11,7 @@ use App\Patient;
 use App\HospitalEmployee;
 use Illuminate\Support\Facades\Hash;
 
+use App\DoctorTime;  //ลองๆ
 //use App\Http\Controllers\Controller;
 //  use Illuminate\Http\Response;
 class UserController extends Controller
@@ -21,6 +22,14 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
 
+     public function addDoctorTime(Request $request) { //ลองๆ
+        $doctorTime = new DoctorTime();
+        $doctorTime->doctor_id = $request->input('doctor_id');
+        $doctorTime->doctorTime_begin = $request->input('doctorTime_begin');
+        $doctorTime->doctorTime_end = $request->input('doctorTime_end');
+        $doctorTime->save();
+    }
+    
 //===============================Login==========================================
  
     public function islogin(Request $request) {
