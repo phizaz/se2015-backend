@@ -17,19 +17,10 @@ class DoctorController extends Controller
         $doctorSpecialty = [];
         $getDoctor = [];
             
-        $doctors = HospitalEmployee::where('type','Doctor')->get();
-
-        // echo 'eiei<br>';
+        $doctors = HospitalEmployee::where('type','Doctor')->where('valid',true)->get();
 
         foreach ($doctors as $doctor) {
-            // echo 'ii';
-            // $doctorFirstname[] = $doctor->firstname;
-            // $doctorLastname[] = $doctor->lastname;
-            // $doctorId[] = $doctor->emp_id;
-            // $doctorSpecialty[] = $doctor->specialty;
-
-            // echo 'docro<br>';//$doctor->firstname;
-
+           
             $getDoctor[] = ['firstname' => $doctor->firstname,
                             'lastname' => $doctor->lastname, 
                             'id' => $doctor->emp_id, 
