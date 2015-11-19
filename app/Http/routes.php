@@ -34,3 +34,5 @@ Route::post('/register-employee','HospitalEmployeeController@registerEmployee');
 
 Route::get('/register-employee/username-exists','HospitalEmployeeController@usernameExist');
 
+Route::get('/test','MakeAppointmentController@test'); //test
+
