@@ -24,7 +24,8 @@ Route::post('/register', 'PatientController@register');
 Route::get('/username-exists','PatientController@isExists');
 
 Route::post('/addDoctorTime','UserController@addDoctorTime');
-Route::post('/getByDoctor','DoctorTime@getByDoctor');
+
+Route::get('/getByDoctor','DoctorTimeController@getByDoctor');
 
 
 
