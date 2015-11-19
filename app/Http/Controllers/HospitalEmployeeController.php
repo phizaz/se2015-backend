@@ -9,6 +9,14 @@ use App\Http\Controllers\Controller;
 
 use App\HospitalEmployee;
 
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+use Illuminate\Http\response;
+// use Illuminate\Routing\Controller;
+
+// use App\Http\Controllers\Auth;
+use Auth;
+
 class HospitalEmployeeController extends Controller
 {
     public function registerEmployee(Request $request){
@@ -98,10 +106,21 @@ class HospitalEmployeeController extends Controller
         }
     }
 
-    public function uploadPhoto (Request $request){
-        $employeeId = $request->input('emp_id');
-
-        
+    public function uploadPhoto (Request $request, $employeeId){
+        if (Auth::check()){
+            $file = $request->file('file');
+            $name = $employeeId;
+            $extension = $file->getClientOriginalExtension();
+            Storage::disk('local')->put($name.'.'.$extension,  File::get($file));
+            return response()->json([
+                "success" => true,
+                "employeeid" => $name
+                ]);
+        }else {
+            return response()->json([
+                "success" => false
+                ]);
+        }
     }
 
 }
