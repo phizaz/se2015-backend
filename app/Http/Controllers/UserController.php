@@ -34,7 +34,7 @@ class UserController extends Controller
             return response()->json(["login" => false
                                     ]);
     } 
-
+// kuy foun
     public function login(Request $request) {
         $users = null;
         //$personal_id = $request->input('personal_id');
