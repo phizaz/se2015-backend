@@ -16,12 +16,6 @@ use App\DoctorTime;  //ลองๆ
 //  use Illuminate\Http\Response;
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-
      public function addDoctorTime(Request $request) { //ลองๆ
         $doctorTime = new DoctorTime();
         $doctorTime->doctor_id = $request->input('doctor_id');
@@ -31,69 +25,46 @@ class UserController extends Controller
     }
     
 //===============================Login==========================================
- 
-    public function islogin(Request $request) {
-        $users = null;
-        $personal_id = $request->input('personal_id');
-        $username = $request->input('username');
-        if ($personal_id) {
-            $users = Patient::where('personal_id',$request->input('personal_id'))->first();     
-        } else if($username) {
-            $users = HospitalEmployee::where('username',$request->input('username'))->first();
-        }
-        else {
-            return response()->json(["message" => 'this input does not include personal_id or username']);           
-        }
-        
-        if($users) {
-            if(Auth::check($users))
-                return response()->json(["login" => true,
-                                         "data" => Auth::user()->toArray()
-                                        ]);
-            else
-                return response()->json(["login" => false
-                                        ]);
-        } else {
-            return response()->json(["message" => 'this user does not exist in database']);           
-        }
-    }
-//        $patient = Patient::where('personal_id',$request->input('personal_id'))->first();
-//        $employee = HospitalEmployee::where('username',$request->input('username'))->first();
-//        
-//        if($patient) {
-//            if(Auth::check($patient))
-//                return response()->json(["login" => true,
-//                                        "data" => Auth::user()->toArray()
-//                                        ]);
-//            else
-//                return response()->json(["login" => false
-//                                        ]);
-//        }
-//        else if($employee) {
-//            if(Auth::check($employee)) // น่าจะยังcheckของemployee ไม่ได้เพราะไม่ได้ใส่ model => 'HospitalEmployee' ในไฟล์ auth.php 
-//                return response()->json(["login" => true,
-//                                        "data" => Auth::user()->toArray()
-//                                        ]);
-//            else
-//                return response()->json(["login" => false
-//                                        ]);
-//        }
-//    }
+    public function islogin() {
+        if(Auth::check()) {
+            return response()->json(["login" => true,
+                                     "data" => Auth::user()->toArray()
+                                    ]);
+        } else
+            return response()->json(["login" => false
+                                    ]);
+    } 
 
     public function login(Request $request) {
         $users = null;
-        $personal_id = $request->input('personal_id');
+        //$personal_id = $request->input('personal_id');
+        $username = $request->input('username');
+        if($username==null) 
+            return response()->json(["success" => false,
+                                    "message" => 'username_not_found'
+                                    ]);
+
         $password = $request->input('password');
-        $username = $request->input('userbame');
-        if($personal_id) {
-            $users = Patient::where('personal_id',$personal_id)->first();
-        } else if($username) {
-            $users = HospitalEmployee::where('username',$username)-first();
-        }
-        else {
-            return response()->json(["message" => 'this input does not include personal_id or username']);           
-        }
+        if($password==null) 
+            return response()->json(["success" => false,
+                                    "message" => 'password_not_found'
+                                    ]);
         
+        // if($personal_id) {
+        //     $users = Patient::where('personal_id',$personal_id)->first();
+        // } else if($username) {
+        //     $users = HospitalEmployee::where('username',$username)-first();
+        // }
+        // else {
+        //     return response()->json(["message" => 'this input does not include personal_id or username']);           
+        // }
+        $users = Patient::where('personal_id',$username)->first();
+        if($users==null) {
+//        } else {
+            $users = HospitalEmployee::where('username',$username)->first();
+        }
+       
+
         if($users) {
             if(Hash::check($password,$users->password)) {   //กรณี Login สำเร็จ
                     Auth::login($users);
@@ -101,16 +72,16 @@ class UserController extends Controller
                                              "login" => true,
                                              "data" => Auth::user()->toArray()
                                             ]);
-                }
-                else {                                     //กรณี Password ผิด
-                    return response()->json(["success" => false,
-                                             "message" => 'wrong password'
-                                            ]);
-                }
+            }
+            else {                                     //กรณี Password ผิด
+                return response()->json(["success" => false,
+                                         "message" => 'wrong_password'
+                                        ]);
+            }
         }
         else {                                            //กรณี user ไม่ได้อยู่ใน database
             return response()->json(["succes" => false,
-                                     "message" => 'this user does not exist in database'
+                                     "message" => 'this_user_does_not_exist_in_database'
                                     ]);
         }
         
@@ -171,35 +142,91 @@ class UserController extends Controller
     
     public function logout(Request $request) {
         $users = null;
-        if($request->input('personal_id')) {
-            $users = Patient::where('personal_id', $request->input('personal_id'))->first();
-        } else if($request->input('username')) {       
-            $users = Patient::where('username', $request->input('username'))->first();        
-        } else {
+        $username = $request->input('username');
+        if($username==null){
             return response()->json(["success" => false,
-                                     "message" => 'this input does not include personal_id or username'
+                                     "message" => 'username_not_found'
                                     ]);
         }
+        // if($request->input('personal_id')) {
+        //     $users = Patient::where('personal_id', $request->input('personal_id'))->first();
+        // } else if($request->input('username')) {       
+        //     $users = Patient::where('username', $request->input('username'))->first();        
+        $users = Patient::where('personal_id',$username)->first();
+        if($users==null) {
+            $users = HospitalEmployee::where('username',$username)->first();
+        }
+        
         if($users) {
-//            if(Auth::check($patient)) {
-//                Auth::logout($patient);
-                if(Auth::check(Auth::user())) {
-                    Auth::logout(Auth::user());
+            if(Auth::check(Auth::user())) {
+                Auth::logout(Auth::user());
                 return response()->json(["success" => true,
                                          "login" => false
                                         ]);
-                }
-                else {
-                    return response()->json(["success" => false,
-                                             "message" => 'this user is already logout'
-                                            ]);
-                }
+            }
+            else {
+                return response()->json(["success" => false,
+                                          "message" => 'this_user_is_already_logout'
+                                        ]);
+            }
         }
         else {
             return response()->json(["success" => false,
-                                     "message" => 'this user does not exist in database'
+                                     "message" => 'this_username_does_not_exist_in_database'
                                      ]);
         }
+        
+//        $personal_id = $request->input('personal_id');
+//        $password = $request->input('password');
+////  Login for Patient        
+//        $patient = Patient::where('personal_id', $personal_id)->first();
+//        if($personal_id){
+//            if($patient) {
+//                if(Hash::check($password,$patient->password)) {
+//                    Auth::login($patient);
+//                    return response()->json(["success" => true,
+//                                             "login" => true,
+//                                             "data" => Auth::user()->toArray()
+//                                            ]);
+//                }
+//                else {
+//                    return response()->json(["success" => false,
+//                                           "message" => 'wrong password'
+//                                            ]);
+//                }
+//            }
+//            else {
+//                return response()->json(["succes" => false,
+//                                         "message" => 'personal_id_does not exist in Database'
+//                                        ]);
+//            }   
+//        }
+////  Login for Employee
+//        $username = $request->input('username');
+//        if($username) {
+//            $employee = HospitalEmployee::where('username',$username)->first();
+//            if($employee) {
+//                if(Hash::check($password,$employee->password)) {
+//                    Auth::login($employee);
+//                    return response()->json(["success" => true,
+//                                             "login" => true,
+//                                             "data" => Auth::user()->toArray()
+//                                            ]);
+//                }
+//                else {
+//                    return response()->json(["success" => false,
+//                                             "message" => 'wrong password'
+//                                            ]);
+//                }
+//            }
+//            else {
+//                return response()->json(["succes" => false,
+//                                         "message" => 'username not exist in Database'
+//                                        ]);
+//            }
+//            
+//            
+//        }
     }
     
   
