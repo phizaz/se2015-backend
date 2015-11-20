@@ -23,9 +23,9 @@ class Patient extends Model implements  AuthenticatableContract,
 //                           'status','gender','nationality','bloodtype',
 //                           'remark','priority'];
 //    
-    public function getAuthPassword() {
-        return $this->password;
-    }
+//    public function getAuthPassword() {
+//        return $this->password;
+//    }
 
     protected $hidden = ['password', 'remember_token'];
 }
