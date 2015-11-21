@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\HospitalEmployee;
+use Hash;
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
