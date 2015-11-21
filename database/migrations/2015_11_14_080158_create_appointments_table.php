@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-
 class CreateAppointmentsTable extends Migration
 {
     /**
@@ -13,7 +12,14 @@ class CreateAppointmentsTable extends Migration
     public function up()
     {
         Schema::create('appointments', function (Blueprint $table) {
-            $table->increments('id');
+            $table->increments('appointment_id');
+            $table->timestamp('time');  //<------ หา้มใส่ timestamps ต้องใช้ timestamp
+            $table->integer('emp_id');
+            $table->string('personal_id');
+            $table->string('filterType');
+            $table->string('filterString');
+
+            $table->rememberToken();
             $table->timestamps();
         });
     }
