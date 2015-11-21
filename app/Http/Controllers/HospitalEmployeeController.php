@@ -127,8 +127,8 @@ class HospitalEmployeeController extends Controller
         }
     }
 
-    // public function uploadPhoto($employeeId){
-    //     $name = $employeeId;
-    // }
+    public function getPhoto($employeeId){
+        $name = $employeeId;
+    }
 
 }
