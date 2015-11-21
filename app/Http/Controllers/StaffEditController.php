@@ -30,8 +30,20 @@ class StaffEditController extends Controller
             "success" => true,
             "data" => $patients->toArray()
             ]);
+    }
 
+    public function getUnconfirmedStaff(){
 
+        if (!HospitalEmployee::isStaff()){
+            return response()->json([
+                "success" => false
+                ]);
+        }
+
+        $employee = HospitalEmployee::where('valid',false)
+                    ->select()
+                    ->get();
 
     }
+
 }
