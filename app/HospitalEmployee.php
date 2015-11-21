@@ -17,6 +17,7 @@ class HospitalEmployee extends Model implements  AuthenticatableContract,
 
 	use Authenticatable, Authorizable, CanResetPassword;
 	protected $table = 'hospital_employees';
+	protected $primaryKey = 'emp_id';
     protected $fillable = ['username', 'password'];
 
 

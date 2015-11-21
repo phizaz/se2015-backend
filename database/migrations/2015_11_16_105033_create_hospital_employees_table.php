@@ -25,6 +25,8 @@ class CreateHospitalEmployeesTable extends Migration
             // $table->string('type');
             $table->string('specialty');
 
+            $table->string('photo_extension');
+
             $table->boolean('valid')->default(false);
 
             $table->rememberToken();
