@@ -50,4 +50,4 @@ Route::post('/makeAppointment','MakeAppointmentController@makeAppointment');
 Route::get('/getAppointmentPatient','MakeAppointmentController@getAppointmentPatient');
 
 //-------StaffEditController-----------
-Route::get('/staff/get-patient/{firstname}/{lastname}','StaffEditController@getPatient');
+Route::get('/staff/get-patient','StaffEditController@getPatient');

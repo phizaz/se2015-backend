@@ -8,17 +8,30 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Patient;
+use App\HospitalEmployee;
 
 class StaffEditController extends Controller
 {
-    public function getPatient($firstname, $lastname){
+    public function getPatient(Request $request){
 
+        if (!HospitalEmployee::isStaff()){
+            return response()->json([
+                "success" => false
+                ]);
+        }
+        $firstname = $request->firstname;
+        $lastname = $request->lastname;
         $patients = Patient::where('firstname','LIKE',"%$firstname%")
                     ->orWhere('lastname','LIKE',"%$lastname%")
+                    ->select('firstname','lastname', 'id')
                     ->get();
+
+        return response()->json([
+            "success" => true,
+            "data" => $patients->toArray()
+            ]);
 
 
 
     }
 }
-ห
