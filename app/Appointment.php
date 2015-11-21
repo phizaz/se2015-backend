@@ -2,8 +2,8 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 
+use Illuminate\Database\Eloquent\Model;
 class Appointment extends Model
 {
 	public static function sendWarning($emailPatient, $telPatient, $time) {
@@ -41,40 +41,70 @@ class Appointment extends Model
             return ["success" => false, "message" => $error];
 	}
 
+
 	public static function bookAppointment($doctor_id, $patinet_id, $datetime) {
 
 	}
 
+
+    //Done
+    public static function deleteAppointment($appointment_id) {
+        //$appointment_id = $appointment->input('appointment_id');
+        if($appointment_id == null)
+            return ["success" => false,
+                    "message" => 'appointment_id_not_found'
+                    ];
+        if(Appointment::where('appointment_id', $appointment_id)->first()) {
+            Appointment::where('appointment_id', $appointment_id)->delete();
+            return ["success" => true,
+                    ];
+        }
+        else {
+            return ["success" => false,
+                    "message" => 'this_appointment_does_not_exist_in_database'
+                    ];
+        }
+    }
+
+    //Done
     //get Patient's Appointment
-    public static function getAppointmentPatient($patient) {
-    	$personal_id = $patient->personal_id;
+    public static function getAppointmentPatient($personal_id) {
+        if($personal_id == null)
+            return ["success" => false,
+                    "message" => 'patient_not_found'
+                   ];
+        // if(Patient::where('personal_id',$personal_id)->first()  ==null)
+        //     return ["success" => false,
+        //             "message" => 'this_patient_does_not_exist_in_database'
+        //            ];
+
     	$appointment = Appointment::where('personal_id',$personal_id)->get();
-    	if($appointment)
+    	if(sizeof($appointment)>0)
     		return $appointment;
     	else 
-    		return ["message" => 'no_appointment']; 
+    		return ["message" => 'no_appointment_for_this_patient']; 
     }
+
+    //Done
     //get Doctor's Appointment
-    public static function getAppointmentDoctor($doctor) {
-    	$doctor_id = $doctor->input('doctor_id');
-    	$appointment = Appointment::where('doctor_id',$doctor_id)->get();
-    	if($appointment)
-    		return $appointment;
-    	else 
-    		return ["message" => 'no_appointment'];
+    public static function getAppointmentDoctor($doctor_id) {
+    	// $doctor_id = $doctor->input('doctor_id');
+    	if($doctor_id == null)
+            return ["success" => false,
+                    "message" => 'patient_not_found'
+                   ];
+        $appointment = Appointment::where('emp_id',$doctor_id)->get();
+        if(sizeof($appointment)>0)
+            return $appointment;
+        else 
+            return ["message" => 'no_appointment_for_this_doctor']; 
     }
 
+    //Done
     public static function getAppointmentStaff() {
-    	return Appointment::all;
-    }
-
-    public static function deleteAppointment($appointment) {
-    	$appointment_id = $appointment->appointment_id;
-    	$appointmentDelete = Appointment::where('appointment_id',$appointment_id);
-    	if($appointmentDelete)
-    		$appointmentDelete->delete();
-    	else
-    		return ["message" => 'appointment_not_found'];
+    	return ["success" => true,
+                Appointment::all()
+               ];
     }
 
     public static function getLastAppointment($patient_id) {

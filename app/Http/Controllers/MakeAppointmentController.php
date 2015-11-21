@@ -32,36 +32,44 @@ class MakeAppointmentController extends Controller
             echo '<br>no no no';
     }
 
+    //Done
     public function makeAppointment(Request $request) {
         $datetime =  $request->input('datetime');
         $emp_id = $request->input('emp_id');
         $personal_id = $request->input('personal_id');
         $filterType = $request->input('search_type');
         $filterString = $request->input('search_string');
-//
+
         return response()->json( Appointment::makeAppointment($filterType, $filterString, 
                                            $emp_id, $personal_id, $datetime) );
     }
 
-
-
-
-    public static function getAppointmentPatient($patient) {
-        $personal_id = $patient->personal_id;
-        $appointment = Appointment::where('personal_id',$personal_id)->get();
-        if($appointment)
-            return $appointment;
-        else 
-            return ["message" => 'no_appointment']; 
+    public function bookAppointment(Request $request) {
+        
     }
+    
+    //Done
+    public function deleteAppointment(Request $request) {
+        $appointment_id = $request->input('appointment_id');
+        return response()->json(Appointment::deleteAppointment($appointment_id))    ;
+    } 
+    //Done
+    public static function getAppointmentPatient(Request $request) {
+        $personal_id = $request->input('personal_id');
+        return response()->json(Appointment::getAppointmentPatient($personal_id));
+    }
+    //Done
     //get Doctor's Appointment
-    public static function getAppointmentDoctor($doctor) {
-        $doctor_id = $doctor->input('doctor_id');
-        $appointment = Appointment::where('doctor_id',$doctor_id)->get();
-        if($appointment)
-            return $appointment;
-        else 
-            return ["message" => 'no_appointment'];
+    public static function getAppointmentDoctor(Request $request) {
+        $emp_id = $request->input('emp_id');
+        return response()->json(Appointment::getAppointmentDoctor($emp_id));
+    }
+    //Done
+    public static function getAppointmentStaff() {
+        return response()->json(Appointment::getAppointmentStaff());
     }
 
+    public static function getLastAppointment($doctor) {
+
+    }
 }

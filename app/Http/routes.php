@@ -42,6 +42,10 @@ Route::get('/test','MakeAppointmentController@test'); //test
 
 Route::post('/makeAppointment','MakeAppointmentController@makeAppointment');
 
+Route::post('/deleteAppointment','MakeAppointmentController@deleteAppointment');
+
 Route::get('/getAppointmentPatient','MakeAppointmentController@getAppointmentPatient');
 
+Route::get('/getAppointmentDoctor','MakeAppointmentController@getAppointmentDoctor');
 
+Route::get('/getAppointmentStaff','MakeAppointmentController@getAppointmentStaff');
