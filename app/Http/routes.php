@@ -13,23 +13,35 @@
 
 Route::get('/', 'HomeController@index');
 
+//--------UserController----------
 Route::get('/is-login','UserController@islogin');
 
 Route::post('/login', 'UserController@login');
 
 Route::post('/logout', 'UserController@logout');
 
+
+//-------PatientController-------------
 Route::post('/register', 'PatientController@register');
 
 Route::get('/username-exists','PatientController@isExists');
 
-Route::post('/addDoctorTime','UserController@addDoctorTime');
-Route::post('/getByDoctor','DoctorTime@getByDoctor');
 
+//-------DoctorTimeController--------------
+Route::get('/getByDoctor','DoctorTimeController@getByDoctor');
 
+Route::post('/addDoctorTime','DoctorTimeController@addDoctorTime');
 
-
+//------HospitalEmployee------
 Route::post('/register-employee','HospitalEmployeeController@registerEmployee');
 
 Route::get('/register-employee/username-exists','HospitalEmployeeController@usernameExist');
+
+//-------MakeAppointmentController-----------
+Route::get('/test','MakeAppointmentController@test'); //test
+
+Route::post('/makeAppointment','MakeAppointmentController@makeAppointment');
+
+Route::get('/getAppointmentPatient','MakeAppointmentController@getAppointmentPatient');
+
 

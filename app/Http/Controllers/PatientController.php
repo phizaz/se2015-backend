@@ -20,7 +20,7 @@ class PatientController extends Controller
       if(Patient::where('personal_id',$request->input('personal_id'))->first()) {
           return response()->json([
                                     "success" => false,
-                                    "message" => ['this personal_id has been used']
+                                    "message" => ['this_personal_id_has_been_used']
                                     ]);
       }
       
@@ -98,9 +98,15 @@ class PatientController extends Controller
     
 //----------------isExists--------------------------
     public function isExists(Request $request) {
-        if(Patient::where('personal_id',$request->input('personal_id'))->first())
-            return response()->json(["found" => true]);
-        else
-            return response()->json(["found" => false]);
+      $personal_id = $request->input('personal_id');
+      if($personal_id == null)
+        return response()->json(["found" => false,
+                                 "message" => 'personal_id_not_found' 
+                                ]);
+      
+      if(Patient::where('personal_id',$request->input('personal_id'))->first())
+        return response()->json(["found" => true]);
+      else
+        return response()->json(["found" => false]);
     }
 }
