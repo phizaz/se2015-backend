@@ -16,6 +16,7 @@ use Illuminate\Http\response;
 
 // use App\Http\Controllers\Auth;
 use Auth;
+use Hash;
 
 class HospitalEmployeeController extends Controller
 {
@@ -75,7 +76,7 @@ class HospitalEmployeeController extends Controller
         $Employee = new HospitalEmployee;
 
         $Employee->username = $username;
-        $Employee->password = $password;
+        $Employee->password = Hash::make($password);
         $Employee->firstname = $firstname;
         $Employee->lastname = $lastname;
         $Employee->tel = $tel;

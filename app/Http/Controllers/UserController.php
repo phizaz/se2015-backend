@@ -5,15 +5,21 @@ namespace App\Http\Controllers;
 use Auth;                    //for authentication
 //Illuminate\Routing\Controller; 
 //use Illuminate\Auth;
+//use Illuminate\Http\Request;
 use Illuminate\Http\Request;
-use App\Http\Requests;
+//use App\Http\Requests; 
 use App\Patient;
 use App\HospitalEmployee;
-use Illuminate\Support\Facades\Hash;
+//use Illuminate\Support\Facades\Hash;
 
+//use Illuminate\Support\Facades\Storage;
+//use Illuminate\Support\Facades\File;
+use Illuminate\Http\response;
+use Hash;
 use App\DoctorTime;  //ลองๆ
 //use App\Http\Controllers\Controller;
 //  use Illuminate\Http\Response;
+
 class UserController extends Controller
 {
     /**
@@ -84,11 +90,11 @@ class UserController extends Controller
         $users = null;
         $personal_id = $request->input('personal_id');
         $password = $request->input('password');
-        $username = $request->input('userbame');
+        $username = $request->input('username');
         if($personal_id) {
             $users = Patient::where('personal_id',$personal_id)->first();
         } else if($username) {
-            $users = HospitalEmployee::where('username',$username)-first();
+            $users = HospitalEmployee::where('username',$username)->first();
         }
         else {
             return response()->json(["message" => 'this input does not include personal_id or username']);           
@@ -99,7 +105,7 @@ class UserController extends Controller
                     Auth::login($users);
                     return response()->json(["success" => true,
                                              "login" => true,
-                                             "data" => Auth::user()->toArray()
+                                             "data" => array(Auth::user())
                                             ]);
                 }
                 else {                                     //กรณี Password ผิด
