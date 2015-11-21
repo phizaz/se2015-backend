@@ -15,6 +15,7 @@ class DoctorTime extends Migration
     public function up()
     {
         Schema::create('DoctorTime', function (Blueprint $table) {
+            $table->increments('doctorTime_id');
             $table->integer('doctor_id');
             $table->datetime('doctorTime_begin');
             $table->dateTime('doctorTime_end');

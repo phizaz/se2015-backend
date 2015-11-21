@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Datetime;
 use Illuminate\Http\Request;
 use App\DoctorTime;
 use App\Http\Requests;
@@ -41,9 +41,22 @@ class DoctorTimeController extends Controller
     }
     
     public function makeDoctorTime(Request $request) {
-        $doctorTime_begin = $request->input('doctorTime_begin');
-        $doctorTime_end = $request->input('doctorTime_end');
-        return response()->json([ DoctorTime::makeDoctorTime( $doctorTime_begin,$doctorTime_end ) ]);
+        $doctorTime_begin = new Datetime($request->input('doctorTime_begin'));
+        $doctorTime_end = new Datetime($request->input('doctorTime_end'));
+        $doctor_id = $request->input('emp_id');
+
+        return response()->json([ DoctorTime::makeDoctorTime( $doctor_id, $doctorTime_begin,
+                                                              $doctorTime_end ) ]);
+    }
+
+    public function getFreeSlotByDoctor( Request $request ) {
+        $doctor_id = $request->input('emp_id');
+        return response()->json(DoctorTime::getFreeSlotByDoctor($doctor_id));
+    }
+    
+    public function getFreeSlotBySpecialty( Request $request ) {
+        $specialty = $request->input('specialty');
+        return response()->json(DoctorTime::getFreeSlotBySpecialty($specialty));
     }
     
 }
