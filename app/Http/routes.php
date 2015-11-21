@@ -36,3 +36,5 @@ Route::post('/register-employee/upload-photo/{emp_id}','HospitalEmployeeControll
 Route::get('/hospital-employee/{emp_id}/photo','HospitalEmployeeController@getPhoto');
 
 Route::get('/doctor','DoctorController@doctor');
+
+Route::get('/staff/get-patient/{firstname}/{lastname}','StaffEditController@getPatient');
