@@ -11,14 +11,26 @@ use App\HospitalEmployee;
 class DoctorController extends Controller
 {
     public function doctor (){
-        $doctorName = [];
-        $doctorSurname = [];
-        $doctorId = [];
+        // $doctorFirstname = [];
+        // $doctorLastname = [];
+        // $doctorId = [];
+        // $doctorSpecialty = [];
+        $getDoctor = [];
+            
+        $doctors = HospitalEmployee::where('role','Doctor')->where('valid',true)->get();
 
-        while(){
-            if(HospitalEmployee::where('type','Doctor')->first()){
-                $doctor
-            }
+        foreach ($doctors as $doctor) {
+           
+            $getDoctor[] = ['firstname' => $doctor->firstname,
+                            'lastname' => $doctor->lastname, 
+                            'id' => $doctor->emp_id, 
+                            'specialty' => $doctor->specialty];
         }
+
+        return response()->json([
+                "success" => true,
+                "data" => $doctors
+            ]);
+
     }
 }

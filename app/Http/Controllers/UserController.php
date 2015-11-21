@@ -54,7 +54,7 @@ class UserController extends Controller
         if($password==null) 
             return response()->json(["success" => false,
                                     "message" => 'password_not_found'
-         
+                                    ]);
         $users = Patient::where('personal_id',$username)->first();
         if($users==null) {
             $users = HospitalEmployee::where('username',$username)->first();

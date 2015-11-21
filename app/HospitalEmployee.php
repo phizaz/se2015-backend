@@ -20,6 +20,6 @@ class HospitalEmployee extends Model implements  AuthenticatableContract,
     protected $fillable = ['username', 'password'];
 
 
-    protected $hidden = ['password', 'remember_token'];
+   	protected $hidden = ['password', 'remember_token'];
 
 }

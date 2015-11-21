@@ -33,6 +33,6 @@ Route::get('/register-employee/username-exists','HospitalEmployeeController@user
 
 Route::post('/register-employee/upload-photo/{emp_id}','HospitalEmployeeController@uploadPhoto');
 
-Route::get('/hospital-employee');
+Route::get('/hospital-employee/{emp_id}/photo','HospitalEmployeeController@getPhoto');
 
-Route::get('/Doctor','DoctorController@doctor');
+Route::get('/doctor','DoctorController@doctor');

@@ -17,7 +17,7 @@ use Illuminate\Http\response;
 
 // use App\Http\Controllers\Auth;
 use Auth;
-use Hash;
+// use Hash;
 
 class HospitalEmployeeController extends Controller
 {
@@ -29,7 +29,7 @@ class HospitalEmployeeController extends Controller
         $tel = $request->input('tel');
         $email = $request->input('email');
         $role = $request->input('role');
-        $type = $request->input('type');
+        // $type = $request->input('type');
         $specialty = $request->input('specialty');
         $valid = $request->input('valid');
 
@@ -60,10 +60,10 @@ class HospitalEmployeeController extends Controller
         if($role == null){
             $error[] = 'role_not_found';
         }
-        if($type == null){
-            $error[] = 'type_not_found';
-        }
-        if($type =='Doctor' && $specialty == null){
+        // if($type == null){
+        //     $error[] = 'type_not_found';
+        // }
+        if($role =='Doctor' && $specialty == null){
             $error[] = 'specialty_not_found';
         }
 
@@ -83,9 +83,9 @@ class HospitalEmployeeController extends Controller
         $Employee->tel = $tel;
         $Employee->email = $email;
         $Employee->role = $role;
-        $Employee->type = $type;
+        // $Employee->type = $type;
         
-        if($type == 'Doctor'){
+        if($role == 'Doctor'){
             $Employee->specialty = $specialty;
         }
 
@@ -109,7 +109,9 @@ class HospitalEmployeeController extends Controller
     }
 
     public function uploadPhoto (Request $request, $employeeId){
+        // $emp = HospitalEmployee::where('emp_id',$employeeId);
         if (Auth::check()){
+            // echo "eiei";
             $file = $request->file('file');
             $name = $employeeId;
             $extension = $file->getClientOriginalExtension();
@@ -124,5 +126,9 @@ class HospitalEmployeeController extends Controller
                 ]);
         }
     }
+
+    // public function uploadPhoto($employeeId){
+    //     $name = $employeeId;
+    // }
 
 }

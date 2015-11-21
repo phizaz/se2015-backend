@@ -22,7 +22,7 @@ class CreateHospitalEmployeesTable extends Migration
             $table->string('tel');
             $table->string('email');
             $table->string('role');
-            $table->string('type');
+            // $table->string('type');
             $table->string('specialty');
 
             $table->boolean('valid')->default(false);
