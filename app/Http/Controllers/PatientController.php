@@ -36,6 +36,7 @@ class PatientController extends Controller
       $religion = $request->input('religion');
       $nationality = $request->input('nationality');
       $bloodtype = $request->input('bloodtype');
+      $tel = $request->input('tel');
       $remark = $request->input('remark');
 
       if($personal_id == null)
@@ -58,6 +59,8 @@ class PatientController extends Controller
           $error[] = 'nationality_not_found';
       if($bloodtype == null)
           $error[] = 'bloodtype_not_found';
+      if($tel == null)
+          $error[] = 'tel_not_found';
 
       if(sizeof($error)==0) {
 
@@ -72,6 +75,7 @@ class PatientController extends Controller
           'religion' => $religion,
           'nationality' => $nationality,
           'bloodtype' => $bloodtype,
+          'tel' => $tel,
           'remark' => $remark,
           ]);
 

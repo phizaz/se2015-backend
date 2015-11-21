@@ -40,6 +40,7 @@ class Patient extends Model
       $patient->religion = $attributes['religion'];
       $patient->nationality = $attributes['nationality'];
       $patient->bloodtype = $attributes['bloodtype'];
+      $patient->tel = $attributes['tel'];
       $patient->remark = $attributes['remark'];
       $patient->save();
 
