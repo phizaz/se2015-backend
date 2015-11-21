@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use App\User;
 use App\HospitalEmployee;
 use Hash;
 
@@ -20,7 +21,6 @@ class HospitalEmployeeController extends Controller
         $tel = $request->input('tel');
         $email = $request->input('email');
         $role = $request->input('role');
-        $type = $request->input('type');
         $specialty = $request->input('specialty');
         $valid = $request->input('valid');
 
@@ -30,7 +30,7 @@ class HospitalEmployeeController extends Controller
         $error = [];
         if(!$username){
             $error[] = 'username_not_found';
-        }else if(HospitalEmployee::where('username', $username)->first()){
+        }else if(User::where('username', $username)->first()){
             $error[] = 'username_exist';
         }
         if($password == null){
@@ -51,10 +51,7 @@ class HospitalEmployeeController extends Controller
         if($role == null){
             $error[] = 'role_not_found';
         }
-        if($type == null){
-            $error[] = 'type_not_found';
-        }
-        if($type =='Doctor' && $specialty == null){
+        if($role =='Doctor' && $specialty == null){
             $error[] = 'specialty_not_found';
         }
 
@@ -65,27 +62,25 @@ class HospitalEmployeeController extends Controller
             ]);
         }
 
-        $Employee = new HospitalEmployee;
+        $prototype = [
+            'username' => $username,
+            'password' => $password,
+            'firstname' => $firstname,
+            'lastname' => $lastname,
+            'tel' => $tel,
+            'email' => $email,
+            'role' => $role,
+        ];
 
-        $Employee->username = $username;
-        $Employee->password = Hash::make($password);
-        $Employee->firstname = $firstname;
-        $Employee->lastname = $lastname;
-        $Employee->tel = $tel;
-        $Employee->email = $email;
-        $Employee->role = $role;
-        $Employee->type = $type;
-        
-        if($type == 'Doctor'){
-            $Employee->specialty = $specialty;
+        if($role == 'Doctor'){
+            $prototype['specialty'] = $specialty;
         }
 
-        $Employee->valid = false;
-        $Employee->save();
+        $employee = HospitalEmployee::create($prototype);
 
         return response()->json([
             "success" => true,
-            "data" => $Employee->toArray()
+            "data" => $employee->toArray()
         ]);
     }
 

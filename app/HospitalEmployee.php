@@ -2,23 +2,64 @@
 
 namespace App;
 
-use Illuminate\Auth\Authenticatable;
-use Illuminate\Auth\Passwords\CanResetPassword;
-use Illuminate\Foundation\Auth\Access\Authorizable;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
-use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Model;
-//kuy kuy
-class HospitalEmployee extends Model implements  AuthenticatableContract,
-                                        AuthorizableContract,
-                                        CanResetPasswordContract
+use Illuminate\Support\Facades\Hash;
+
+class HospitalEmployee extends Model
 {
-	use Authenticatable, Authorizable, CanResetPassword;
 	protected $table = 'hospital_employees';
-    protected $fillable = ['username', 'password'];
+
+  protected $primaryKey = 'emp_id';
+
+  // config the toArray return types
+  protected $casts = [
+    'valid' => 'boolean',
+  ];
+
+  public function user() {
+    return $this->morphOne('App\User', 'userable');
+  }
+
+  /**
+   * Override the toArray function to append 'username' (which belongs to App\User) to it
+   * @return [type] [description]
+   */
+  public function toArray() {
+    $original = Parent::toArray($this);
+    $new = array_merge($original, [
+      'username' => $this->user->username,
+      ]);
+
+    return $new;
+  }
+
+  public static function create(array $attributes = []) {
+    $employee = new HospitalEmployee;
+    $employee->firstname = $attributes['firstname'];
+    $employee->lastname = $attributes['lastname'];
+    $employee->tel = $attributes['tel'];
+    $employee->email = $attributes['email'];
+    $employee->role = $attributes['role'];
+
+    if ($attributes['role'] == 'Doctor') {
+      $employee->specialty = $attributes['specialty'];
+    }
+
+    $employee->valid = false;
+    $employee->save();
+
+    // this will also create the User for authentication
+    $user = new User;
+    // duplicate personal id to username
+    $user->username = $attributes['username'];
+    $user->password = Hash::make($attributes['password']);
+    $user->userable_id = $employee->emp_id;
+    $user->userable_type = 'App\HospitalEmployee';
+    $user->save();
+
+    return $employee;
+  }
 
 
-    protected $hidden = ['password', 'remember_token'];
-    
+
 }

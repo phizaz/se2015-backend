@@ -7,6 +7,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Patient;
+use App\User;
 use Input;
 use Auth;                    //for authentication
 use Illuminate\Support\Facades\Hash;
@@ -15,7 +16,7 @@ class PatientController extends Controller
 {
 //-------------------register---------------------------
     public function register(Request $request) {
-      
+
 //---------- เช็คกรณีที่personal_id มีอยู่ในระบบแล้ว-------------
       if(Patient::where('personal_id',$request->input('personal_id'))->first()) {
           return response()->json([
@@ -23,7 +24,7 @@ class PatientController extends Controller
                                     "message" => ['this_personal_id_has_been_used']
                                     ]);
       }
-      
+
       $error = [];
       $personal_id = $request->input('personal_id');
       $password = $request->input('password');
@@ -35,13 +36,12 @@ class PatientController extends Controller
       $religion = $request->input('religion');
       $nationality = $request->input('nationality');
       $bloodtype = $request->input('bloodtype');
-      $status = $request->input('status');
+      $tel = $request->input('tel');
       $remark = $request->input('remark');
-      $priority = $request->input('priority');
-      
-      if($personal_id == null) 
+
+      if($personal_id == null)
           $error[] = 'personal_id_not_found';
-      if($password == null) 
+      if($password == null)
           $error[] = 'password_id_not_found';
       if($firstname == null)
           $error[] = 'firstname_not_found';
@@ -59,34 +59,28 @@ class PatientController extends Controller
           $error[] = 'nationality_not_found';
       if($bloodtype == null)
           $error[] = 'bloodtype_not_found';
-      if($status == null)
-          $error[] = 'status_not_found';
-      if($remark == null)
-          $error[] = 'remark_not_found';
-      if($priority == null)
-          $error[] = 'priority_not_found';
-      
-      
-      $patient = new Patient;
-      
-      $patient->personal_id = $personal_id;
-      $patient->firstname = $firstname;
-      $patient->lastname = $lastname;
-      $patient->birthdate = $birthdate;
-      $patient->address = $address;
-      $patient->gender = $gender;
-      $patient->religion = $religion;
-      $patient->nationality = $nationality;
-      $patient->bloodtype = $bloodtype;
-      $patient->status = $status;
-      $patient->remark = $remark;
-      $patient->priority = $priority;
-      
-      $patient->password = Hash::make($password);
+      if($tel == null)
+          $error[] = 'tel_not_found';
+
       if(sizeof($error)==0) {
-        $patient->save();
+
+        $patient = Patient::create([
+          'personal_id' => $personal_id,
+          'password' => $password,
+          'firstname' => $firstname,
+          'lastname' => $lastname,
+          'birthdate' => $birthdate,
+          'address' => $address,
+          'gender' => $gender,
+          'religion' => $religion,
+          'nationality' => $nationality,
+          'bloodtype' => $bloodtype,
+          'tel' => $tel,
+          'remark' => $remark,
+          ]);
+
         return response()->json(["success" => true,
-                              "data" => array($patient)
+                              "data" => $patient->toArray()
                               ]);
       }
       else {
@@ -95,7 +89,7 @@ class PatientController extends Controller
                                 ]);
       }
     }
-    
+
 //----------------isExists--------------------------
     public function isExists(Request $request) {
       $personal_id = $request->input('personal_id');
