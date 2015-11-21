@@ -15,7 +15,7 @@ class CreatePatientsTable extends Migration
             $table->increments('id');
 
             $table->string('personal_id', 13)->unique();
-            $table->string('password', 60);
+
             $table->string('firstname');
             $table->string('lastname');
             $table->date('birthdate');
@@ -30,9 +30,6 @@ class CreatePatientsTable extends Migration
             $table->string('remark')->nullable();
             $table->integer('priority')->default(0);
 
-
-
-            $table->rememberToken();
             $table->timestamps();
         });
     }

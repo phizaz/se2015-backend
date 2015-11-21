@@ -2,30 +2,57 @@
 
 namespace App;
 
-use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Auth\Passwords\CanResetPassword;
-use Illuminate\Foundation\Auth\Access\Authorizable;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
-use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Support\Facades\Hash;
 
-class Patient extends Model implements  AuthenticatableContract,
-                                        AuthorizableContract,
-                                        CanResetPasswordContract
+
+class Patient extends Model
 {
-    use Authenticatable, Authorizable, CanResetPassword;
-    
-    protected $table = 'patients';
-    protected $fillable = ['personal_id', 'password'];
-//    protected $fillable = ['firstname', 'lastname', 'personal_id', 
-//                           'password','religion','address','birthdate',
-//                           'status','gender','nationality','bloodtype',
-//                           'remark','priority'];
-//    
-//    public function getAuthPassword() {
-//        return $this->password;
-//    }
 
-    protected $hidden = ['password', 'remember_token'];
+    protected $table = 'patients';
+
+
+    public function user() {
+      return $this->morphOne('App\User', 'userable');
+    }
+
+    /**
+     * Override the toArray function to append 'username' (which belongs to App\User) to it
+     * @return [type] [description]
+     */
+    public function toArray() {
+      $original = Parent::toArray($this);
+      $new = array_merge($original, [
+        'username' => $this->user->username,
+        ]);
+
+      return $new;
+    }
+
+    public static function create(array $attributes = []) {
+      $patient = new Patient;
+      $patient->personal_id = $attributes['personal_id'];
+      $patient->firstname = $attributes['firstname'];
+      $patient->lastname = $attributes['lastname'];
+      $patient->birthdate = $attributes['birthdate'];
+      $patient->address = $attributes['address'];
+      $patient->gender = $attributes['gender'];
+      $patient->religion = $attributes['religion'];
+      $patient->nationality = $attributes['nationality'];
+      $patient->bloodtype = $attributes['bloodtype'];
+      $patient->remark = $attributes['remark'];
+      $patient->save();
+
+      // this will also create the User for authentication
+      $user = new User;
+      // duplicate personal id to username
+      $user->username = $patient->personal_id;
+      $user->password = Hash::make($attributes['password']);
+      $user->userable_id = $patient->id;
+      $user->userable_type = 'App\Patient';
+      $user->save();
+
+      return $patient;
+    }
+
 }
