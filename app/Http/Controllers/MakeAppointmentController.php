@@ -38,8 +38,30 @@ class MakeAppointmentController extends Controller
         $personal_id = $request->input('personal_id');
         $filterType = $request->input('search_type');
         $filterString = $request->input('search_string');
-
+//
         return response()->json( Appointment::makeAppointment($filterType, $filterString, 
                                            $emp_id, $personal_id, $datetime) );
     }
+
+
+
+
+    public static function getAppointmentPatient($patient) {
+        $personal_id = $patient->personal_id;
+        $appointment = Appointment::where('personal_id',$personal_id)->get();
+        if($appointment)
+            return $appointment;
+        else 
+            return ["message" => 'no_appointment']; 
+    }
+    //get Doctor's Appointment
+    public static function getAppointmentDoctor($doctor) {
+        $doctor_id = $doctor->input('doctor_id');
+        $appointment = Appointment::where('doctor_id',$doctor_id)->get();
+        if($appointment)
+            return $appointment;
+        else 
+            return ["message" => 'no_appointment'];
+    }
+
 }
