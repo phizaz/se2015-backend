@@ -6,6 +6,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 class Appointment extends Model
 {
+    protected $primaryKey = 'appointment_id';
+
 	public static function sendWarning($emailPatient, $telPatient, $time) {
 
 	}
@@ -23,7 +25,7 @@ class Appointment extends Model
             $error[] = 'search_type_not_found';
         if($search_string == null)
             $error[] = 'search_string_not_found';
-        if(Appointment::where('time',$datetime)->first())
+        if(Appointment::where('time',$datetime)->where('emp_id',$emp_id)->first())
             $error[] = 'this_time_not_available';
 
         if(sizeof($error)==0) {

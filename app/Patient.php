@@ -8,9 +8,7 @@ use Illuminate\Support\Facades\Hash;
 
 class Patient extends Model
 {
-
     protected $table = 'patients';
-
 
     public function user() {
       return $this->morphOne('App\User', 'userable');

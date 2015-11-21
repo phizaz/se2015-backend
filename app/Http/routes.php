@@ -32,6 +32,13 @@ Route::get('/getByDoctor','DoctorTimeController@getByDoctor');
 
 Route::post('/addDoctorTime','DoctorTimeController@addDoctorTime');
 
+Route::get('/getFreeSlotByDoctor','DoctorTimeController@getFreeSlotByDoctor');
+
+Route::get('/getFreeSlotBySpecialty','DoctorTimeController@getFreeSlotBySpecialty');
+
+Route::post('/makeDoctorTime','DoctorTimeController@makeDoctorTime');
+
+
 //------HospitalEmployee------
 Route::post('/register-employee','HospitalEmployeeController@registerEmployee');
 
