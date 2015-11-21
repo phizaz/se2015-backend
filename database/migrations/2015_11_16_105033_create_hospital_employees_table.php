@@ -15,21 +15,17 @@ class CreateHospitalEmployeesTable extends Migration
         Schema::create('hospital_employees', function (Blueprint $table) {
             $table->increments('emp_id',10)->unique();
 
-            $table->string('username');
-            $table->string('password',60);
             $table->string('firstname');
             $table->string('lastname');
             $table->string('tel');
             $table->string('email');
             $table->string('role');
-            // $table->string('type');
-            $table->string('specialty');
+            $table->string('specialty')->nullable();
 
             $table->string('photo_extension');
 
             $table->boolean('valid')->default(false);
 
-            $table->rememberToken();
             $table->timestamps();
         });
     }
