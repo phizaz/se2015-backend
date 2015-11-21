@@ -35,9 +35,9 @@ class PatientController extends Controller
       $religion = $request->input('religion');
       $nationality = $request->input('nationality');
       $bloodtype = $request->input('bloodtype');
-      $status = $request->input('status');
+      
       $remark = $request->input('remark');
-      $priority = $request->input('priority');
+      
       
       if($personal_id == null) 
           $error[] = 'personal_id_not_found';
@@ -59,12 +59,8 @@ class PatientController extends Controller
           $error[] = 'nationality_not_found';
       if($bloodtype == null)
           $error[] = 'bloodtype_not_found';
-      if($status == null)
-          $error[] = 'status_not_found';
-      if($remark == null)
-          $error[] = 'remark_not_found';
-      if($priority == null)
-          $error[] = 'priority_not_found';
+      
+  
       
       
       $patient = new Patient;
@@ -78,9 +74,8 @@ class PatientController extends Controller
       $patient->religion = $religion;
       $patient->nationality = $nationality;
       $patient->bloodtype = $bloodtype;
-      $patient->status = $status;
-      $patient->remark = $remark;
-      $patient->priority = $priority;
+      if($remark)
+        $patient->remark = $remark;
       
       $patient->password = Hash::make($password);
       if(sizeof($error)==0) {
