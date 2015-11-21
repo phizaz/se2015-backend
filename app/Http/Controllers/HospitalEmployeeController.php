@@ -95,10 +95,9 @@ class HospitalEmployeeController extends Controller
         ]);
     }
 
-    public function usernameExist (Request $request){
-        $username = $request->input('username');
+    public function usernameExist ($username){
 
-        if(HospitalEmployee::where('username', $username)->first()){
+        if(User::where('username', $username)->first()){
             return response()->json(["found" => true ]);
         }else{
             return response()->json(["found" => false ]);
@@ -107,35 +106,35 @@ class HospitalEmployeeController extends Controller
 
     public function uploadPhoto (Request $request, $employeeId){
         // $emp = HospitalEmployee::where('emp_id',$employeeId);
-        // if (Auth::check()){
-            // echo "eiei";
-            $file = $request->file('file');
-            $mime = $file->getClientMimeType();
-            $name = $employeeId;
-            $extension = $file->getClientOriginalExtension();
-
-            $employee = HospitalEmployee::where('emp_id', $employeeId)->first();
-
-            if (!$employee) {
-                return response() -> json([
-                    'success' => false,
-                    'message' => ['employee_not_found']
-                    ]);
-            }
-
-            $employee->photo_extension = $extension;
-            $employee->save();
-
-            Storage::disk('local')->put($name.'.'.$extension,  File::get($file));
+        if (!HospitalEmployee::isHospitalEmployee()){
             return response()->json([
-                "success" => true,
-                "employeeid" => $name
+                "success" => false
                 ]);
-        // }else {
-        //     return response()->json([
-        //         "success" => false
-        //         ]);
-        // }
+        }
+
+        // echo "eiei";
+        $file = $request->file('file');
+        $mime = $file->getClientMimeType();
+        $name = $employeeId;
+        $extension = $file->getClientOriginalExtension();
+
+        $employee = HospitalEmployee::where('emp_id', $employeeId)->first();
+
+        if (!$employee) {
+            return response() -> json([
+                'success' => false,
+                'message' => ['employee_not_found']
+                ]);
+        }
+
+        $employee->photo_extension = $extension;
+        $employee->save();
+
+        Storage::disk('local')->put($name.'.'.$extension,  File::get($file));
+        return response()->json([
+            "success" => true,
+            "employeeid" => $name
+            ]);
     }
 
     public function getPhoto($emp_id){

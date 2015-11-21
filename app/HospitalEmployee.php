@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 
+use Auth;
+
 class HospitalEmployee extends Model
 {
 	protected $table = 'hospital_employees';
@@ -59,4 +61,55 @@ class HospitalEmployee extends Model
 
     return $employee;
   }
+
+  public static function isDoctor (){
+    if(Auth::check()){
+        $doctor = Auth::user()->userable;
+        if($doctor->role == 'Doctor'){
+          return true;
+        }
+    }
+    return false;
+  }
+
+  public static function isNurse (){
+    if(Auth::check()){
+        $nurse = Auth::user()->userable;
+        if($nurse->role == 'Nurse'){
+          return true;
+        }
+    }
+    return false;
+  }
+
+  public static function isStaff (){
+    if(Auth::check()){
+        $staff = Auth::user()->userable;
+        if($staff->role == 'Staff'){
+          return true;
+        }
+    }
+    return false;
+  }
+
+  public static function isPharmacist (){
+    if(Auth::check()){
+        $pharmacist = Auth::user()->userable;
+        if($pharmacist->role == 'Pharmacist'){
+          return true;
+        }
+    }
+    return false;
+  }
+
+  public static function isHospitalEmployee (){
+    if(Auth::check()){
+        $hospitalEmployee = Auth::user()->userable;
+        if($hospitalEmployee->role){
+          return true;
+        }
+    }
+    return false;
+  }
+
 }

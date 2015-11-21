@@ -20,7 +20,6 @@ Route::post('/login', 'UserController@login');
 
 Route::post('/logout', 'UserController@logout');
 
-
 //-------PatientController-------------
 Route::post('/register', 'PatientController@register');
 
@@ -34,15 +33,13 @@ Route::post('/addDoctorTime','DoctorTimeController@addDoctorTime');
 //------HospitalEmployee------
 Route::post('/register-employee','HospitalEmployeeController@registerEmployee');
 
-Route::get('/register-employee/username-exists','HospitalEmployeeController@usernameExist');
-
+Route::get('/register-employee/username-exists/{username}','HospitalEmployeeController@usernameExist');
 
 Route::post('/register-employee/upload-photo/{emp_id}','HospitalEmployeeController@uploadPhoto');
 
 Route::get('/hospital-employee/{emp_id}/photo','HospitalEmployeeController@getPhoto');
 
 //-------DoctorContorller-----------
-
 Route::get('/doctor','DoctorController@doctor');
 
 //-------MakeAppointmentController-----------
@@ -53,5 +50,4 @@ Route::post('/makeAppointment','MakeAppointmentController@makeAppointment');
 Route::get('/getAppointmentPatient','MakeAppointmentController@getAppointmentPatient');
 
 //-------StaffEditController-----------
-
 Route::get('/staff/get-patient/{firstname}/{lastname}','StaffEditController@getPatient');
