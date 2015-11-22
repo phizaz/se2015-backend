@@ -18,7 +18,7 @@ class CreatePatientReportsTable extends Migration
             $table->integer('patient_id');
             $table->double('height');
             $table->double('weight');
-            $table->integer('pressure');
+            $table->string('pressure');
             $table->string('information');
             $table->datetime('date');
             
