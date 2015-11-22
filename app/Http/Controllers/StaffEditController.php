@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Patient;
 use App\HospitalEmployee;
 use App\Appointment;
+use App\User;
 
 class StaffEditController extends Controller
 {
@@ -81,6 +82,33 @@ class StaffEditController extends Controller
                 "success" => true
                 ]);
         
+    }
+
+    public function discardStaff($empId){
+        if (!HospitalEmployee::isStaff()){
+            return response()->json([
+                "success" => false
+                ]);
+        }
+
+        $emp = HospitalEmployee::where('emp_id',$empId)->first();
+        $usr = User::find($empId);
+        if($emp->valid){
+            // echo 'valid=false';
+            return response()->json([
+                "success" => false
+                ]);
+        }
+
+
+        // DB::table('HospitalEmployee')->where('emp_id',$empId)->delete();
+
+        $emp->delete();
+        $usr->delete();
+
+        return response()->json([
+                "success" => true
+            ]);
     }
 
 }

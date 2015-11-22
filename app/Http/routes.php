@@ -55,3 +55,5 @@ Route::get('/staff/get-patient','StaffEditController@getPatient');
 Route::get('/staff/get-unconfirmed-staff','StaffEditController@getUnconfirmedStaff');
 
 Route::post('/staff/approve-staff/{emp_id}','StaffEditController@approveStaff');
+
+Route::post('/staff/discard-staff/{emp_id}','StaffEditController@discardStaff');
