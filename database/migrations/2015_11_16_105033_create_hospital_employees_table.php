@@ -22,6 +22,8 @@ class CreateHospitalEmployeesTable extends Migration
             $table->string('role');
             $table->string('specialty')->nullable();
 
+            $table->string('photo_extension');
+
             $table->boolean('valid')->default(false);
 
             $table->timestamps();
