@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 use App\User;
 use App\Appointment;
+use DateTime;
 
 
 class Patient extends Model
@@ -31,7 +32,7 @@ class Patient extends Model
 
     public function futureAppointments(){
 
-      return Appointment::where('time', '>=', new DateTime('today'))
+      return Appointment::where('patient_id',$this->id)->where('time', '>=', new DateTime('today'))->get();
 
     }
 
