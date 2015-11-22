@@ -64,4 +64,23 @@ class StaffEditController extends Controller
 
     }
 
+    public function approveStaff($empId){
+
+        if (!HospitalEmployee::isStaff()){
+            return response()->json([
+                "success" => false
+                ]);
+        }
+
+        // DB::table('HospitalEmployee')->where('emp_id',$empId)->update(['valid' => true]);
+        $emp = HospitalEmployee::find($empId);
+        $emp->valid = true;
+        $emp->save();
+
+        return response()->json([
+                "success" => true
+                ]);
+        
+    }
+
 }
