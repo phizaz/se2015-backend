@@ -42,7 +42,7 @@ class PatientController extends Controller
       if($personal_id == null)
           $error[] = 'personal_id_not_found';
       if($password == null)
-          $error[] = 'password_id_not_found';
+          $error[] = 'password_not_found';
       if($firstname == null)
           $error[] = 'firstname_not_found';
       if($lastname == null)
@@ -53,8 +53,6 @@ class PatientController extends Controller
           $error[] = 'address_not_found';
       if($gender == null)
           $error[] = 'gender_not_found';
-      if($religion == null)
-          $error[] = 'religion_not_found';
       if($nationality == null)
           $error[] = 'nationality_not_found';
       if($bloodtype == null)
