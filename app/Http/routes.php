@@ -28,18 +28,21 @@ Route::get('/username-exists','PatientController@isExists');
 
 
 //-------DoctorTimeController--------------
-Route::get('/getByDoctor','DoctorTimeController@getByDoctor');
-
 Route::post('/addDoctorTime','DoctorTimeController@addDoctorTime');
 
 Route::get('/getFreeSlotByDoctor','DoctorTimeController@getFreeSlotByDoctor');
 
 Route::get('/getFreeSlotBySpecialty','DoctorTimeController@getFreeSlotBySpecialty');
 
-Route::post('/makeDoctorTime','DoctorTimeController@makeDoctorTime');
+Route::get('/doctor/{doctor_id}/appointments','DoctorTimeController@getDoctorAppointment');
 
-Route::post('/editDoctorTime','DoctorTimeController@editDoctorTime');
+Route::get('/doctor/{doctor_id}/doctor-time','DoctorTimeController@getByDoctor');
 
+Route::post('/doctor/update-doctor-time/{doctor_time_id}','DoctorTimeController@editDoctorTime');
+
+Route::post('/doctor/create-doctor-time','DoctorTimeController@makeDoctorTime');
+
+Route::post('/doctor/delete-doctor-time/{doctor_time_id}','DoctorTimeController@deleteDoctorTime');
 
 //------HospitalEmployee------
 Route::post('/register-employee','HospitalEmployeeController@registerEmployee');
