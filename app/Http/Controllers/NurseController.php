@@ -13,11 +13,11 @@ use App\PatientReport;
 class NurseController extends Controller
 {
     public function getPatient (Request $request){
-        // if(!HospitalEmployee::isNurse()){
-        // 	return response()->json([
-        // 		"success" => false
-        // 		]);
-        // }
+        if(!HospitalEmployee::isNurse()){
+        	return response()->json([
+        		"success" => false
+        		]);
+        }
 
         $firstname = $request->firsrname;
         $lastname = $request->lastname;
@@ -31,12 +31,20 @@ class NurseController extends Controller
         foreach ($patients as $temp){
         	$a = Patient::where('id',$temp->id)->first();
         	// echo $a;
-        	$b = PatientReport::where('patient_id',$a->id)->first();
-        	
-        	$c = $temp->toArray();
-        	$c['report'] = $b->toArray();
 
-        	$report[] = $c;
+        	$b = PatientReport::orderBy('report_id','desc')
+        						->where('patient_id',$a->id)
+        						->first();
+        	
+			$c = $temp->toArray();
+        	if(!$b){
+				$c['report'] = [];
+	        }else{
+	        	$c['report'] = $b->toArray();
+	        }
+
+	        $report[] = $c;
+
         }
 
         return response()->json([
