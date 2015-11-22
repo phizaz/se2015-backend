@@ -27,7 +27,7 @@ class StaffEditController extends Controller
                     ->select('id','firstname','lastname','birthdate','address','gender','nationality','bloodtype','tel')
                     ->get();
 
-        $b = []
+        $b = [];
 
         foreach ($patients as $patApp) {
             $a = $patApp->appointments();
@@ -54,8 +54,13 @@ class StaffEditController extends Controller
         }
 
         $employee = HospitalEmployee::where('valid',false)
-                    ->select()
+                    ->select('emp_id','firstname','lastname','tel','email','role','specialty')
                     ->get();
+
+        return response()->json([
+            "success" => true,
+            "data" => $employee
+            ]);
 
     }
 

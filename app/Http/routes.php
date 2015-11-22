@@ -52,4 +52,4 @@ Route::get('/getAppointmentPatient','MakeAppointmentController@getAppointmentPat
 //-------StaffEditController-----------
 Route::get('/staff/get-patient','StaffEditController@getPatient');
 
-Roure::get('/staff/get-unconfirmed-staff','StaffEditController@getUnconfirmedStaff');
+Route::get('/staff/get-unconfirmed-staff','StaffEditController@getUnconfirmedStaff');

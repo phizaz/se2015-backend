@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 use App\User;
+use App\Appointment;
 
 
 class Patient extends Model
@@ -33,7 +34,7 @@ class Patient extends Model
     public function appointments() {
       $patients = $this->id;
       $patient = User::where('id',$patients)->first();
-      return Appointments::where('pateint_id', $patient->id)->get();
+      return Appointment::where('patient_id', $patient->id)->get();
     }
 
     public static function create(array $attributes = []) {

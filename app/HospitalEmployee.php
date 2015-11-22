@@ -65,7 +65,7 @@ class HospitalEmployee extends Model
   public static function isDoctor (){
     if(Auth::check()){
         $doctor = Auth::user()->userable;
-        if($doctor->role == 'Doctor'){
+        if($doctor->role == 'Doctor' && $doctor->valid){
           return true;
         }
     }
@@ -75,7 +75,7 @@ class HospitalEmployee extends Model
   public static function isNurse (){
     if(Auth::check()){
         $nurse = Auth::user()->userable;
-        if($nurse->role == 'Nurse'){
+        if($nurse->role == 'Nurse' && $nurse->valid){
           return true;
         }
     }
@@ -85,9 +85,10 @@ class HospitalEmployee extends Model
   public static function isStaff (){
     if(Auth::check()){
         $staff = Auth::user()->userable;
-        if($staff->role == 'Staff'){
+        if($staff->role == 'Staff' && $staff->valid){
           return true;
         }
+
     }
     return false;
   }
@@ -95,7 +96,7 @@ class HospitalEmployee extends Model
   public static function isPharmacist (){
     if(Auth::check()){
         $pharmacist = Auth::user()->userable;
-        if($pharmacist->role == 'Pharmacist'){
+        if($pharmacist->role == 'Pharmacist' && $pharmacist->valid){
           return true;
         }
     }
@@ -105,7 +106,7 @@ class HospitalEmployee extends Model
   public static function isHospitalEmployee (){
     if(Auth::check()){
         $hospitalEmployee = Auth::user()->userable;
-        if($hospitalEmployee->role){
+        if($hospitalEmployee->role && $hospitalEmployee->valid){
           return true;
         }
     }
