@@ -76,3 +76,5 @@ Route::post('/staff/approve-staff/{emp_id}','StaffEditController@approveStaff');
 
 Route::post('/staff/discard-staff/{emp_id}','StaffEditController@discardStaff');
 
+//-------NurseController-----------
+Route::get('/nurse/get-patient/','NurseController@getPatient');
