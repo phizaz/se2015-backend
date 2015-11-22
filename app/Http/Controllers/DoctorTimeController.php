@@ -42,7 +42,7 @@ class DoctorTimeController extends Controller
                                                              $doctorTime_begin,
                                                              $doctorTime_end) ]);
     }
-    
+    //
     public function makeDoctorTime(Request $request) {
         $doctorTime_begin = new Datetime($request->input('doctorTime_begin'));
         $doctorTime_end = new Datetime($request->input('doctorTime_end'));
