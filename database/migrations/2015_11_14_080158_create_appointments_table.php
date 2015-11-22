@@ -15,7 +15,7 @@ class CreateAppointmentsTable extends Migration
             $table->increments('appointment_id');
             $table->timestamp('time');  //<------ หา้มใส่ timestamps ต้องใช้ timestamp
             $table->integer('emp_id');
-            $table->string('personal_id');
+            $table->string('patient_id');
             $table->string('filterType');
             $table->string('filterString');
 

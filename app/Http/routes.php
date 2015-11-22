@@ -38,6 +38,8 @@ Route::get('/getFreeSlotBySpecialty','DoctorTimeController@getFreeSlotBySpecialt
 
 Route::post('/makeDoctorTime','DoctorTimeController@makeDoctorTime');
 
+Route::post('/editDoctorTime','DoctorTimeController@editDoctorTime');
+
 
 //------HospitalEmployee------
 Route::post('/register-employee','HospitalEmployeeController@registerEmployee');

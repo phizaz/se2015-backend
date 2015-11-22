@@ -36,12 +36,12 @@ class MakeAppointmentController extends Controller
     public function makeAppointment(Request $request) {
         $datetime =  $request->input('datetime');
         $emp_id = $request->input('emp_id');
-        $personal_id = $request->input('personal_id');
+        $patient_id = $request->input('patient_id');
         $filterType = $request->input('search_type');
         $filterString = $request->input('search_string');
 
         return response()->json( Appointment::makeAppointment($filterType, $filterString, 
-                                           $emp_id, $personal_id, $datetime) );
+                                           $emp_id, $patient_id, $datetime) );
     }
 
     public function bookAppointment(Request $request) {
@@ -55,8 +55,8 @@ class MakeAppointmentController extends Controller
     } 
     //Done
     public static function getAppointmentPatient(Request $request) {
-        $personal_id = $request->input('personal_id');
-        return response()->json(Appointment::getAppointmentPatient($personal_id));
+        $patient_id = $request->input('personal_id');
+        return response()->json(Appointment::getAppointmentPatient($patient_id));
     }
     //Done
     //get Doctor's Appointment

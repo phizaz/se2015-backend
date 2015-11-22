@@ -15,13 +15,6 @@ class DoctorTimeController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function addDoctorTime(Request $request) { 
-        $doctorTime = new DoctorTime();
-        $doctorTime->doctor_id = $request->input('doctor_id');
-        $doctorTime->doctorTime_begin = $request->input('doctorTime_begin');
-        $doctorTime->doctorTime_end = $request->input('doctorTime_end');
-        $doctorTime->save();
-    }
 
     public function getDoctorAppointment(Request $request) {
         $doctor_id = $request->input('doctor_id');
@@ -38,6 +31,16 @@ class DoctorTimeController extends Controller
     public function getBySpecialty(Request $request) {
         $specialty = $request->input('specialty');
         return response()->json([ DoctorTime::getBySpecialty($specialty) ]);
+    }
+
+    public function editDoctorTime(Request $request) {
+        $doctorTime_begin = new Datetime($request->input('doctorTime_begin'));
+        $doctorTime_end = new Datetime($request->input('doctorTime_end'));
+        $doctorTime_id = $request->input('doctorTime_id');
+        echo '2323';
+        return response()->json([ DoctorTime::editDoctorTime($doctorTime_id,
+                                                             $doctorTime_begin,
+                                                             $doctorTime_end) ]);
     }
     
     public function makeDoctorTime(Request $request) {

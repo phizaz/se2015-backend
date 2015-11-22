@@ -13,12 +13,12 @@ class Appointment extends Model
 	}
     //done
 	public static function makeAppointment($search_type, $search_string, 
-                                           $emp_id, $personal_id, $datetime) {
+                                           $emp_id, $patient_id, $datetime) {
         $error = [];
         if($datetime == null)
             $error[] = 'datetime_not_found';
-        if($personal_id == null)
-            $error[] = 'personal_id_not_found';
+        if($patient_id == null)
+            $error[] = 'patient_id_not_found';
         if($emp_id == null)
             $error[] = 'emp_id_not_found';
         if($search_type == null)
@@ -32,7 +32,7 @@ class Appointment extends Model
             $appointment = new Appointment();
             $appointment->time = $datetime;
             $appointment->emp_id = $emp_id;
-            $appointment->personal_id = $personal_id;
+            $appointment->patient_id = $patient_id;
             $appointment->filterType = $search_type;
             $appointment->filterString = $search_string;
 
@@ -70,8 +70,8 @@ class Appointment extends Model
 
     //Done
     //get Patient's Appointment
-    public static function getAppointmentPatient($personal_id) {
-        if($personal_id == null)
+    public static function getAppointmentPatient($patient_id) {
+        if($patient_id == null)
             return ["success" => false,
                     "message" => 'patient_not_found'
                    ];
@@ -80,7 +80,7 @@ class Appointment extends Model
         //             "message" => 'this_patient_does_not_exist_in_database'
         //            ];
 
-    	$appointment = Appointment::where('personal_id',$personal_id)->get();
+    	$appointment = Appointment::where('patient_id',$patient_id)->get();
     	if(sizeof($appointment)>0)
     		return $appointment;
     	else 
