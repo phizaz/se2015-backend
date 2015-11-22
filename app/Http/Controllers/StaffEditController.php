@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 
 use App\Patient;
 use App\HospitalEmployee;
+use App\Appointment;
 
 class StaffEditController extends Controller
 {
@@ -23,12 +24,24 @@ class StaffEditController extends Controller
         $lastname = $request->lastname;
         $patients = Patient::where('firstname','LIKE',"%$firstname%")
                     ->orWhere('lastname','LIKE',"%$lastname%")
-                    ->select('firstname','lastname', 'id')
+                    ->select('id','firstname','lastname','birthdate','address','gender','nationality','bloodtype','tel')
                     ->get();
+
+        $b = []
+
+        foreach ($patients as $patApp) {
+            $a = $patApp->appointments();
+            // $patApp[] = $a;
+
+            $c = $patApp->toArray();
+            $c['appointments'] = $a->toArray();
+
+            $b[]=$c;
+        }
 
         return response()->json([
             "success" => true,
-            "data" => $patients->toArray()
+            "data" => $b
             ]);
 
 
