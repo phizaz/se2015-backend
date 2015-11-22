@@ -31,6 +31,12 @@ class Patient extends Model
       return $new;
     }
 
+    public function futureAppointments(){
+
+      return Appointment::where('time', '>=', new DateTime('today'))
+
+    }
+
     public function appointments() {
       $patients = $this->id;
       $patient = User::where('id',$patients)->first();

@@ -30,7 +30,7 @@ class StaffEditController extends Controller
         $b = [];
 
         foreach ($patients as $patApp) {
-            $a = $patApp->appointments();
+            $a = $patApp->futureAppointments();
             // $patApp[] = $a;
 
             $c = $patApp->toArray();
