@@ -18,7 +18,8 @@ class StaffEditController extends Controller
 
         if (!HospitalEmployee::isStaff()){
             return response()->json([
-                "success" => false
+                "success" => false,
+                "error" => 'notlogin or notvalid'
                 ]);
         }
         $firstname = $request->firstname;
@@ -33,10 +34,10 @@ class StaffEditController extends Controller
         foreach ($patients as $patApp) {
             $a = $patApp->futureAppointments();
             // $patApp[] = $a;
-
+            
             $c = $patApp->toArray();
             $c['appointments'] = $a->toArray();
-
+            // echo 'kk';
             $b[]=$c;
         }
 
@@ -50,7 +51,8 @@ class StaffEditController extends Controller
 
         if (!HospitalEmployee::isStaff()){
             return response()->json([
-                "success" => false
+                "success" => false,
+                "error" => 'notlogin or notvalid'
                 ]);
         }
 
@@ -69,7 +71,8 @@ class StaffEditController extends Controller
 
         if (!HospitalEmployee::isStaff()){
             return response()->json([
-                "success" => false
+                "success" => false,
+                "error" => 'notlogin or notvalid'
                 ]);
         }
 
@@ -87,7 +90,8 @@ class StaffEditController extends Controller
     public function discardStaff($empId){
         if (!HospitalEmployee::isStaff()){
             return response()->json([
-                "success" => false
+                "success" => false,
+                "error" => 'notlogin or notvalid'
                 ]);
         }
 
@@ -96,7 +100,8 @@ class StaffEditController extends Controller
         if($emp->valid){
             // echo 'valid=false';
             return response()->json([
-                "success" => false
+                "success" => false,
+                "error" => 'valid = true'
                 ]);
         }
 

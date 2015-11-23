@@ -9,6 +9,7 @@ use Auth;                    //for authentication
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Patient;
+use App\User;
 use App\HospitalEmployee;
 use Illuminate\Support\Facades\Hash;
 use App\User;
@@ -44,14 +45,23 @@ class UserController extends Controller {
         $username = $request->input('username');
         $password = $request->input('password');
 
-        if (!Auth::attempt([
-            'username' => $username,
-            'password' => $password,
-            ])) {
+        $user = User::where('username', $username)->first();
+
+        if (!$user || !Hash::check($password, $user->password)) {
             return response()->json([
                 'success' => false,
                 'message' => ['username_or_password_wrong']]);
         }
+
+        $entity = $user->userable;
+
+        if ($entity->role && !$entity->valid) {
+            return response()->json([
+                'success' => false,
+                'message' => ['not_confirmed']]);
+        }
+
+        Auth::login($user);
 
         $result = Auth::user()->userable->toArray();
         $appointments = User::getUserAppointment(Auth::user());
