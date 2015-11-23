@@ -23,14 +23,14 @@ class Patient extends Model
      * Override the toArray function to append 'username' (which belongs to App\User) to it
      * @return [type] [description]
      */
-    public function toArray() {
-      $original = Parent::toArray($this);
-      $new = array_merge($original, [
-        'username' => $this->user->username,
-        ]);
+    // public function toArray() {
+    //   $original = Parent::toArray($this);
+    //   $new = array_merge($original, [
+    //     'username' => $this->user->username,
+    //     ]);
 
-      return $new;
-    }
+    //   return $new;
+    // }
 
     public function futureAppointments(){
 
