@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Auth;
 use App\DoctorTime;
+use App\HospitalEmployee;
 use DateTime; 
 use DateInterval;
 class MakeAppointmentController extends Controller

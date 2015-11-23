@@ -54,7 +54,6 @@ Route::post('/register-employee/upload-photo/{emp_id}','HospitalEmployeeControll
 Route::get('/hospital-employee/{emp_id}/photo','HospitalEmployeeController@getPhoto');
 
 //-------DoctorContorller-----------
-Route::get('/doctor','DoctorController@doctor');
 
 //-------MakeAppointmentController-----------
 
@@ -74,6 +73,8 @@ Route::post('/appointment/make','MakeAppointmentController@makeAppointment');
 
 Route::post('/appointment/delete/{appointment_id}','MakeAppointmentController@deleteAppointment');
  
+Route::get('/doctor','MakeAppointmentController@doctor');
+
 
 //-------StaffEditController-----------
 Route::get('/staff/get-patient','StaffEditController@getPatient');
