@@ -30,7 +30,7 @@ Route::post('/register/uploadPhoto/{patient_id}','PatientController@uploadPhoto'
 Route::get('/patient/{patient_id}/picture','PatientController@getPhoto');
 
 //-------DoctorTimeController--------------
-Route::post('/addDoctorTime','DoctorTimeController@addDoctorTime');
+//Route::post('/addDoctorTime','DoctorTimeController@addDoctorTime');
 
 Route::get('/doctor/{doctor_id}/appointments','DoctorTimeController@getDoctorAppointment');
 

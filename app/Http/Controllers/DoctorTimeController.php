@@ -44,25 +44,42 @@ class DoctorTimeController extends Controller
     //                                                          $endTime) ]);
     // }
 
-    //Input = {"delete":{1},"doctor_id":{1},"create":{{"start":2015-01-01 16:00:00,"end":2015-01-01 20:00:00}}}
+    //Input = {"delete":[1],"doctor_id":[1],"create":[["start":"2015-01-01 16:00:00","end":"2015-01-01 20:00:00"]]}
+    //    or  ["delete":[1],"doctor_id":[1],"create":[["start":2015-01-01 16:00:00,"end":2015-01-01 20:00:00]]]
+    //        ["delete"=>[1],"doctor_id"=>[1],"create"=>[["start"=>2015-01-01 16:00:00,"end"=>2015-01-01 20:00:00]]]
     public function editDoctorTime(Request $request) {
-        $string = $request->input("data");
+        //$string = $request->input("data");
+        $string = '{"delete":[23],"doctor_id":1,"create":[{"start":"2015-01-01 8:00:00","end":"2015-01-01 12:00:00"},{"start":"2015-01-01 14:00:00","end":"2015-01-01 16:00:00"}]}';
         $data = json_decode($string);
         $result = [];
-        foreach($data["delete"] as $delete_id) {
+        $doctor_id = $data->doctor_id;
+        
+
+        //echo $doctor_id[0];
+        //return $data->delete;
+        // $json = '{"apple":"asdf","orange": "asd"}';
+        // $ar = json_decode($json);
+        // return $ar->apple;
+
+        foreach($data->delete as $delete_id) {
+            //echo $delete_id;
             DoctorTimeController::deleteDoctorTime($delete_id);
         }
-        foreach($data["create"] as $create) {
-            $doctor_id = $data["doctor_id"];
-            $startTime = $create["startTime"];
-            $endTime = $create["endTime"];
-            DoctorTime::makeDoctorTime($create);
-            $result[] = DoctorTime::editDoctorTime($doctor_time_id,
-                                                             $startTime,
-                                                             $endTime) ;
+        foreach($data->create as $create) {
+            $startTime = new DateTime($create->start);
+            $endTime = new DateTime($create->end);
+            // echo $startTime->format("y-m-d");
+            // if($startTime->format("y-m-d") == $endTime->format("y-m-d"))
+            //     return 'ddfdfd';
+            //echo $create->start;
+            DoctorTime::makeDoctorTime($doctor_id, $startTime, $endTime);
+            //$result[] = DoctorTime::editDoctorTime($doctor_time_id,
+            //                                                 $startTime,
+            //                                                 $endTime) ;
         }
         //เรียก fuction refresh เพื่อไล่ check ว่า appointmentไหนไม่อยู่ในเวลาที่แพทย์สะดวกบ้างให้ลบทิ้ง
-        $result[] = DoctorTime::refreshDoctorTime($data["doctor_id"]) ;
+        //echo 'sdsd';
+        $result[] = DoctorTime::refreshDoctorTime($doctor_id) ;
         return response()->json($result); 
     }
 
@@ -82,7 +99,8 @@ class DoctorTimeController extends Controller
         // if(!HospitalEmployee::isDoctor())
         //     return response()->json(["success" = false];
         $doctorTime = DoctorTime::where('doctorTime_id',$doctor_time_id)->first();
-        $doctorTime->delete();
+        if($doctorTime)
+            $doctorTime->delete();
         return response()->json(["success" => true]);
     }   
 }
