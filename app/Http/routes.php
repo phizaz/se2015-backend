@@ -59,6 +59,8 @@ Route::post('/drug-record/create','DoctorController@drugRecord');
 
 Route::post('/drug-record/update/{drug_id}','DoctorController@drugRecordUpdate');
 
+Route::post('/drug-record/delete/{drug_id}','DoctorController@drugRecordDelete');
+
 //-------MakeAppointmentController-----------
 
 Route::get('/find-options/doctor/{doctor_id}','MakeAppointmentController@getFreeSlotByDoctor');

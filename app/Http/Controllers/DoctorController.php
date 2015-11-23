@@ -105,4 +105,23 @@ class DoctorController extends Controller
 
     }
 
+    public function drugRecordDelete ($drugId){
+
+        if (!HospitalEmployee::isDoctor()){
+            return response()->json([
+                "success" => false,
+                "error" => 'notlogin or notvalid'
+                ]);
+        }
+
+        $drug = drugRecord::where('drug_id',$drugId)->first();
+        $drug->delete();
+
+        return response()->json([
+            "success" => true,
+            "meessage" => 'saved drug record'
+            ]);
+
+    }
+
 }
