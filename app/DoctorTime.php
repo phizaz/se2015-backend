@@ -140,8 +140,8 @@ class DoctorTime extends Model
             if($del)
                 Appointment::deleteAppointment($appointment->appointment_id);
         }
-        $new_appointment = Appointment::orderBy('time','asc')->where('emp_id',$doctor_id)->get();
-        return ["success" => true,"new_appointment" => $new_appointment];
+        $docTime = DoctorTime::orderBy('doctorTime_begin','asc')->where('doctor_id',$doctor_id)->get();
+        return ["success" => true,"new doctorTime" => $docTime];
     }
     
 }
