@@ -119,7 +119,7 @@ class DoctorController extends Controller
 
         return response()->json([
             "success" => true,
-            "meessage" => 'saved drug record'
+            "meessage" => 'deleted drug record'
             ]);
 
     }
