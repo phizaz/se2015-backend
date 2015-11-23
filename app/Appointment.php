@@ -122,7 +122,7 @@ class Appointment extends Model
     	// $doctor_id = $doctor->input('doctor_id');
     	if($doctor_id == null)
             return ["success" => false,
-                    "message" => 'patient_not_found'
+                    "message" => 'doctor_not_found'
                    ];
         $appointments = Appointment::orderBy('time','desc')->where('emp_id',$doctor_id)->get();
         $result = [];

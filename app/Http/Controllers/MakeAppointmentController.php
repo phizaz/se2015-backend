@@ -7,6 +7,7 @@ use App\Appointment;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Auth;
+use App\Patient;
 use App\DoctorTime;
 use App\HospitalEmployee;
 use DateTime; 
@@ -18,24 +19,45 @@ class MakeAppointmentController extends Controller
     //Done
     //---------------------------getFreeSlotByDoctor----------------------------
     public function getFreeSlotByDoctor( $doctor_id ) {
-        return response()->json(DoctorTime::getFreeSlotByDoctor($doctor_id));
+        if(!Patient::isPatient() && !HospitalEmployee::isDoctor() && !HospitalEmployee::isStaff())
+            return response()->json([
+                "success" => false,
+                "error" => 'notlogin or notvalid'
+                ]);
+        return response()->json(["success" => true, 
+                                 "data" => DoctorTime::getFreeSlotByDoctor($doctor_id)
+                                ]);
     }
 
     //Done
     //-------------------------getFreeSlotBySpecialty---------------------------
     public function getFreeSlotBySpecialty( $specialty ) {
-        return response()->json(DoctorTime::getFreeSlotBySpecialty($specialty));
+        if(!Patient::isPatient() && !HospitalEmployee::isDoctor() && !HospitalEmployee::isStaff())
+            return response()->json([
+                "success" => false,
+                "error" => 'notlogin or notvalid'
+                ]);
+        return response()->json(["success" => true, 
+                                 "data" => DoctorTime::getFreeSlotBySpecialty($specialty)
+                                ]);
     }
 
     //Done
     //-------------------------makeAppointment---------------------------------
     public function makeAppointment(Request $request) {
+        if(!Patient::isPatient() && !HospitalEmployee::isStaff())
+            return response()->json([
+                "success" => false,
+                "error" => 'notlogin or notvalid'
+                ]);
         $datetime =  $request->input('datetime');
         $emp_id = $request->input('doctor_id');
 
         $patient_id = Auth::user()->userable->id;
         
-        return response()->json( Appointment::makeAppointment($emp_id, $patient_id, $datetime) );
+        return response()->json( ["success" => true, 
+                                  "data" => Appointment::makeAppointment($emp_id, $patient_id, $datetime) 
+                                 ]);
     }
 
     // Mai Tomg Tum Leaw
@@ -45,29 +67,62 @@ class MakeAppointmentController extends Controller
     
     //Done
     public function deleteAppointment($appointment_id) {
-        return response()->json(Appointment::deleteAppointment($appointment_id))    ;
+        if(!Patient::isPatient() && !HospitalEmployee::isStaff() && !HospitalEmployee::isDoctor())
+            return response()->json([
+                "success" => false,
+                "error" => 'notlogin or notvalid'
+                ]);
+        return response()->json(Appointment::deleteAppointment($appointment_id));
     }
 
     //Done
     public function getAppointmentPatient(Request $request) {
-        $patient_id = $request->input('personal_id');
-        return response()->json(Appointment::getAppointmentPatient($patient_id));
+        if(!Patient::isPatient() && !HospitalEmployee::isStaff())
+            return response()->json([
+                "success" => false,
+                "error" => 'notlogin or notvalid'
+                ]);
+        $patient_id = $request->input('Patient_id');
+        return response()->json(["success" => true, 
+                                  "data" => Appointment::getAppointmentPatient($patient_id)
+                                ]);
     }
 
     //Done
     //get Doctor's Appointment
     public function getAppointmentDoctor(Request $request) {
+        if(!Patient::isPatient() && !HospitalEmployee::isDoctor() && !HospitalEmployee::isStaff())
+            return response()->json([
+                "success" => false,
+                "error" => 'notlogin or notvalid'
+                ]);
         $emp_id = $request->input('emp_id');
-        return response()->json(Appointment::getAppointmentDoctor($emp_id));
+        return response()->json(["success" => true, 
+                                "data" => Appointment::getAppointmentDoctor($emp_id)
+                                ]);
     }
 
     //Done
     public function getAppointmentStaff() {
-        return response()->json(Appointment::getAppointmentStaff());
+        if(!HospitalEmployee::isStaff())
+            return response()->json([
+                "success" => false,
+                "error" => 'notlogin or notvalid'
+                ]);
+        return response()->json(["success" => true, 
+                                 "data" => Appointment::getAppointmentStaff()
+                                ]);
     }
 
     public function getLastAppointment($patient_id) {
-        return Appointment::getLastAppointment($patient_id);
+        if(!Patient::isPatient() && !HospitalEmployee::isDoctor() && !HospitalEmployee::isStaff())
+            return response()->json([
+                "success" => false,
+                "error" => 'notlogin or notvalid'
+                ]);
+        return response()->json(["success" => true, 
+                                 "data" => Appointment::getLastAppointment($patient_id)
+                                ]);
     }
 
     //------------------------getAllDoctor-------------------------
