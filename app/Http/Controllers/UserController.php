@@ -28,8 +28,9 @@ class UserController extends Controller {
             //     $appointments = Appointment::getAppointmentPatient(Auth::user()->userable->patient_id);
             $appointments = User::getUserAppointment(Auth::user());
             return response()->json(["login" => true,
-                                     "data" => Auth::user()->userable->toArray(),
-                                     "appointments" => $appointments
+                                     "data" => array_merge(Auth::user()->userable->toArray(), [
+                                            "appointments" => $appointments
+                                        ])
                                     ]);
         } else
             return response()->json(["login" => false
@@ -66,9 +67,10 @@ class UserController extends Controller {
         $appointments = User::getUserAppointment(Auth::user());
         return response()->json([
             'success' => true,
-            'data' => $result,
-            'appointment' => $appointments
-            ]);
+            'data' => array_merge($result, [
+                'appointment' => $appointments
+            ])
+        ]);
     }
 
     public function logout(Request $request) {
