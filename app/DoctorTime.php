@@ -157,5 +157,22 @@ class DoctorTime extends Model
         // $freeSlot[] = ["end" => $doctorTimes->doctorTime_end]; 
         return $result;
     }
+
+    public static function refreshDoctorTime($doctor_id) {
+        $appointments = Appointment::where('emp_id',$doctor_id)->get();
+        $doctorTimes = DoctorTime::where('doctor_id',$doctor_id)->get();
+        foreach($appointments as $appointment) {
+            foreach($doctorTimes as $doctorTime) {
+                //ถ้า appointment และ doctorTime อยู่ในวันเดียวกัน
+                if(($appoinment->time)->format("y-m-d") == ($doctorTime->doctorTime_begin)->format("y-m-d")) {
+                    if(Datetime($appointment)->time < Datetime($doctorTime->doctorTime_begin) || 
+                        Datetime($appointment)->time > Datetime($doctorTime_end)) {
+                        Appointment::deleteAppointment($appontment->appointment_id);
+                    }
+                }
+            }
+        }
+        return ["success" => true];
+    }
     
 }

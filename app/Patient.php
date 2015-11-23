@@ -31,7 +31,7 @@ class Patient extends Model
 
     public function futureAppointments(){
 
-      return Appointment::where('time', '>=', new DateTime('today'))
+      return Appointment::where('time', '>=', new DateTime('today'));
 
     }
 

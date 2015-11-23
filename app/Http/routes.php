@@ -36,7 +36,9 @@ Route::get('/doctor/{doctor_id}/appointments','DoctorTimeController@getDoctorApp
 
 Route::get('/doctor/{doctor_id}/doctor-time','DoctorTimeController@getByDoctor');
 
-Route::post('/doctor/update-doctor-time/{doctor_time_id}','DoctorTimeController@editDoctorTime');
+//Route::post('/doctor/update-doctor-time/{doctor_time_id}','DoctorTimeController@editDoctorTime');
+
+Route::post('/doctor/update-doctor-time','DoctorTimeController@editDoctorTime');
 
 Route::post('/doctor/create-doctor-time','DoctorTimeController@makeDoctorTime');
 
