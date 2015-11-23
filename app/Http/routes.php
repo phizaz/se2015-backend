@@ -59,8 +59,6 @@ Route::get('/doctor','DoctorController@doctor');
 //-------MakeAppointmentController-----------
 Route::get('/test','MakeAppointmentController@test'); //test
 
-Route::post('/makeAppointment','MakeAppointmentController@makeAppointment');
-
 Route::post('/deleteAppointment','MakeAppointmentController@deleteAppointment');
 
 Route::get('/getAppointmentPatient','MakeAppointmentController@getAppointmentPatient');
@@ -68,6 +66,8 @@ Route::get('/getAppointmentPatient','MakeAppointmentController@getAppointmentPat
 Route::get('/getAppointmentDoctor','MakeAppointmentController@getAppointmentDoctor');
 
 Route::get('/getAppointmentStaff','MakeAppointmentController@getAppointmentStaff');
+
+Route::post('/appointment/make','MakeAppointmentController@makeAppointment');
 
 //-------StaffEditController-----------
 Route::get('/staff/get-patient','StaffEditController@getPatient');
