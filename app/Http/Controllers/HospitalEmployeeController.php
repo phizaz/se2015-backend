@@ -106,12 +106,12 @@ class HospitalEmployeeController extends Controller
 
     public function uploadPhoto (Request $request, $employeeId){
         // $emp = HospitalEmployee::where('emp_id',$employeeId);
-        if (!HospitalEmployee::isHospitalEmployee()){
-            return response()->json([
-                "success" => false,
-                "error" => 'notlogin or notvalid'
-                ]);
-        }
+        // if (!HospitalEmployee::isHospitalEmployee()){
+        //     return response()->json([
+        //         "success" => false,
+        //         "error" => 'notlogin or notvalid'
+        //         ]);
+        // }
 
         // echo "eiei";
         $file = $request->file('file');
