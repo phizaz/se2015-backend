@@ -61,21 +61,23 @@ class DoctorTimeController extends Controller
     // }
     public function editDoctorTime(Request $request) {
         $string = $request->input("data");
-        $data = json_decode($string);
+        $data = json_decode($string,true);
+        $result = [];
         foreach($data["delete"] as $delete_id) {
             DoctorTimeController::deleteDoctorTime($delete_id);
         }
-        foreach($data->create as $create) {
+        foreach($data["create"] as $create) {
             $doctor_id = $data["doctor_id"];
             $startTime = $create["startTime"];
             $endTime = $create["endTime"];
-            DoctorTime::makeDoctorTime($create)
-            return response()->json([ DoctorTime::editDoctorTime($doctor_time_id,
+            DoctorTime::makeDoctorTime($create);
+            $result[] = DoctorTime::editDoctorTime($doctor_time_id,
                                                              $startTime,
-                                                             $endTime) ]);
+                                                             $endTime) ;
         }
         //เรียก fuction refresh เพื่อไล่ check ว่า appointmentไหนไม่อยู่ในเวลาที่แพทย์สะดวกบ้างให้ลบทิ้ง
-        return response()->json( DoctorTime::refreshDoctorTime($data["doctor_id"]) );
+        $result[] = DoctorTime::refreshDoctorTime($data["doctor_id"]) ;
+        return response()->json($result); 
     }
 
     //Done

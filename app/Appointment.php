@@ -80,11 +80,16 @@ class Appointment extends Model
         //             "message" => 'this_patient_does_not_exist_in_database'
         //            ];
 
-    	$appointment = Appointment::where('patient_id',$patient_id)->get();
-    	if(sizeof($appointment)>0)
-    		return $appointment;
+    	$appointments = Appointment::where('patient_id',$patient_id)->get();
+        $result = [];
+        foreach ($appointments as $appointment) {
+            $doctor = HospitalEmployee::where('emp_id',$appointment->emp_id)->first();
+            $result[] = ["doctor" => $doctor,"appointment" => $appointment];
+        }
+    	if(sizeof($appointments)>0)
+    		return $result;
     	else 
-    		return ["message" => 'no_appointment_for_this_patient']; 
+    		return []; 
     }
 
     //Done
@@ -95,11 +100,16 @@ class Appointment extends Model
             return ["success" => false,
                     "message" => 'patient_not_found'
                    ];
-        $appointment = Appointment::where('emp_id',$doctor_id)->get();
-        if(sizeof($appointment)>0)
-            return $appointment;
+        $appointments = Appointment::where('emp_id',$doctor_id)->get();
+        $result = [];
+        foreach ($appointments as $appointment) {
+            $patient = Patient::where('id',$appointment->patient_id)->first();
+            $result[] = ["patient" => $patient,"appointment" => $appointment];
+        }
+        if(sizeof($appointments)>0)
+            return $result;
         else 
-            return ["message" => 'no_appointment_for_this_doctor']; 
+            return []; 
     }
 
     //Done

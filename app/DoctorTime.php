@@ -164,7 +164,8 @@ class DoctorTime extends Model
         foreach($appointments as $appointment) {
             foreach($doctorTimes as $doctorTime) {
                 //ถ้า appointment และ doctorTime อยู่ในวันเดียวกัน
-                if(($appoinment->time)->format("y-m-d") == ($doctorTime->doctorTime_begin)->format("y-m-d")) {
+                // if(($appoinment->time)->format("y-m-d") == ($doctorTime->doctorTime_begin)->format("y-m-d")) {
+                if($appoinment->time->format("y-m-d") == $doctorTime->doctorTime_begin->format("y-m-d")) {
                     if(Datetime($appointment)->time < Datetime($doctorTime->doctorTime_begin) || 
                         Datetime($appointment)->time > Datetime($doctorTime_end)) {
                         Appointment::deleteAppointment($appontment->appointment_id);
@@ -172,7 +173,7 @@ class DoctorTime extends Model
                 }
             }
         }
-        return ["success" => true];
+        return ["refresh" => true];
     }
     
 }
