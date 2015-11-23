@@ -16,22 +16,6 @@ class DoctorTimeController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-
-    
-    public function getBySpecialty(Request $request) {
-        $specialty = $request->input('specialty');
-        return response()->json([ DoctorTime::getBySpecialty($specialty) ]);
-    }
-
-    public function getFreeSlotByDoctor( Request $request ) {
-        $doctor_id = $request->input('emp_id');
-        return response()->json(DoctorTime::getFreeSlotByDoctor($doctor_id));
-    }
-    
-    public function getFreeSlotBySpecialty( Request $request ) {
-        $specialty = $request->input('specialty');
-        return response()->json(DoctorTime::getFreeSlotBySpecialty($specialty));
-    }
  
 //----------------------Function in List from Google Drive-------------------------
     //Done
@@ -59,9 +43,11 @@ class DoctorTimeController extends Controller
     //                                                          $startTime,
     //                                                          $endTime) ]);
     // }
+
+    //Input = {"delete":{1},"doctor_id":{1},"create":{{"start":2015-01-01 16:00:00,"end":2015-01-01 20:00:00}}}
     public function editDoctorTime(Request $request) {
         $string = $request->input("data");
-        $data = json_decode($string,true);
+        $data = json_decode($string);
         $result = [];
         foreach($data["delete"] as $delete_id) {
             DoctorTimeController::deleteDoctorTime($delete_id);

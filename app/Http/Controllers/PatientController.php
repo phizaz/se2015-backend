@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+use App\Http\Controllers\Fileentry;
+
+use Illuminate\Http\response;
 use App\Patient;
 use App\User;
 use Input;
@@ -102,7 +107,57 @@ class PatientController extends Controller
         return response()->json(["found" => false]);
     }
 
+    //----------------uploadPhoto---------------------
+    public function uploadPhoto (Request $request, $patient_id){
+        // $emp = HospitalEmployee::where('emp_id',$employeeId);
+        if (!Patient::isPatient()){
+            return response()->json([
+                "success" => false
+                ]);
+        }
 
+        $file = $request->file('file');
+        $mime = $file->getClientMimeType();
+        $name = $patient_id;
+        $extension = $file->getClientOriginalExtension();
+
+        $patient = Patient::where('id', $patient_id)->first();
+
+        if (!$patient) {
+            return response() -> json([
+                'success' => false,
+                'message' => 'patient_not_found'
+                ]);
+        }
+
+        $patient->photo_extension = $extension;
+        $patient->save();
+
+        Storage::disk('local')->put($name.'.'.$extension,  File::get($file));
+        return response()->json([
+            "success" => true,
+            "patient_id" => $name
+            ]);
+    }
+
+    //-----------------------getPhoto-----------------------------------------
+    public function getPhoto($patient_id){
+
+        $patient = Patient::where('id', $patient_id)->first();
+        $file = Storage::disk('local')->get($patient_id . '.' . $patient->photo_extension);
+
+        $ext = $patient->photo_extension;
+        if ($ext == 'jpeg') {
+            return (new Response($file, 200))->header('Content-Type', 'image/jpeg');
+        }else if($ext == 'jpg'){
+            return (new Response($file, 200))->header('Content-Type', 'image/jpeg');
+        }else if($ext == 'gif'){
+            return (new Response($file, 200))->header('Content-Type', 'image/gif');
+        }else if($ext == 'png'){
+            return (new Response($file, 200))->header('Content-Type', 'image/png');
+        }
+
+    }
 
 
 }

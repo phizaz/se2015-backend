@@ -30,7 +30,8 @@ class CreatePatientsTable extends Migration
             $table->boolean('status')->default(0);
             $table->string('remark')->nullable();
             $table->integer('priority')->default(0);
-
+            $table->string('photo_extension');
+            
             $table->timestamps();
         });
     }
