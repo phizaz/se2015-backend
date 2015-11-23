@@ -55,6 +55,14 @@ Route::get('/hospital-employee/{emp_id}/photo','HospitalEmployeeController@getPh
 
 //-------DoctorContorller-----------
 
+Route::post('/drug-record/create','DoctorController@drugRecord');
+
+Route::post('/drug-record/update/{drug_id}','DoctorController@drugRecordUpdate');
+
+Route::post('/drug-record/delete/{drug_id}','DoctorController@drugRecordDelete');
+
+route::post('/symptom-report/create','DoctorController@symptomReportCreate');
+
 //-------MakeAppointmentController-----------
 
 Route::get('/find-options/doctor/{doctor_id}','MakeAppointmentController@getFreeSlotByDoctor');

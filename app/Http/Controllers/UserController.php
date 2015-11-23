@@ -12,7 +12,11 @@ use App\Patient;
 use App\User;
 use App\HospitalEmployee;
 use Illuminate\Support\Facades\Hash;
+<<<<<<< HEAD
 
+=======
+// use App\User;
+>>>>>>> 23625d9973cb0583626448f585c270d93311c0ab
 use App\DoctorTime;  //ลองๆ
 
 //use App\Http\Controllers\Controller;
