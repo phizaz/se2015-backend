@@ -144,7 +144,7 @@ class Appointment extends Model
     }
 
     public static function getLastAppointment($patient_id) {
-        return array(Appointment::where('patient_id',$patient_id)->first());
+        return array(Appointment::order('time','desc')->where('patient_id',$patient_id)->first());
     }
 
 }

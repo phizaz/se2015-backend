@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Auth;                    //for authentication
 //Illuminate\Routing\Controller;
 //use Illuminate\Auth;
+
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Patient;
@@ -12,6 +13,7 @@ use App\HospitalEmployee;
 use Illuminate\Support\Facades\Hash;
 use App\User;
 use App\DoctorTime;  //ลองๆ
+
 //use App\Http\Controllers\Controller;
 //  use Illuminate\Http\Response;
 class UserController extends Controller {
@@ -74,5 +76,7 @@ class UserController extends Controller {
             'success' => true
             ]);
     }
+
+    
 
 }

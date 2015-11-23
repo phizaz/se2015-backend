@@ -25,12 +25,12 @@ Route::post('/register', 'PatientController@register');
 
 Route::get('/username-exists','PatientController@isExists');
 
+Route::post('/register/uploadPhoto/{patient_id}','PatientController@uploadPhoto');
+
+Route::get('/patient/{patient_id}/picture','PatientController@getPhoto');
+
 //-------DoctorTimeController--------------
 Route::post('/addDoctorTime','DoctorTimeController@addDoctorTime');
-
-Route::get('/getFreeSlotByDoctor','DoctorTimeController@getFreeSlotByDoctor');
-
-Route::get('/getFreeSlotBySpecialty','DoctorTimeController@getFreeSlotBySpecialty');
 
 Route::get('/doctor/{doctor_id}/appointments','DoctorTimeController@getDoctorAppointment');
 
@@ -57,7 +57,10 @@ Route::get('/hospital-employee/{emp_id}/photo','HospitalEmployeeController@getPh
 Route::get('/doctor','DoctorController@doctor');
 
 //-------MakeAppointmentController-----------
-Route::get('/test','MakeAppointmentController@test'); //test
+
+Route::get('/find-options/doctor/{doctor_id}','MakeAppointmentController@getFreeSlotByDoctor');
+
+Route::get('/find-options/specialty/{specialty}','MakeAppointmentController@getFreeSlotBySpecialty');
 
 Route::post('/deleteAppointment','MakeAppointmentController@deleteAppointment');
 
@@ -68,6 +71,9 @@ Route::get('/getAppointmentDoctor','MakeAppointmentController@getAppointmentDoct
 Route::get('/getAppointmentStaff','MakeAppointmentController@getAppointmentStaff');
 
 Route::post('/appointment/make','MakeAppointmentController@makeAppointment');
+
+Route::post('/appointment/delete/{appointment_id}','MakeAppointmentController@deleteAppointment');
+ 
 
 //-------StaffEditController-----------
 Route::get('/staff/get-patient','StaffEditController@getPatient');

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 use App\User;
 use App\Appointment;
-
+use Auth;
 
 class Patient extends Model
 {
@@ -39,6 +39,17 @@ class Patient extends Model
       $patients = $this->id;
       $patient = User::where('id',$patients)->first();
       return Appointment::where('patient_id', $patient->id)->get();
+    }
+
+    //------------------isPatient------------------
+    public static function isPatient (){
+      if(Auth::check()) {
+          $patient = Auth::user()->userable;
+          if($patient->role == null) {
+            return true;
+          }
+      }
+      return false;
     }
 
     public static function create(array $attributes = []) {
