@@ -69,7 +69,7 @@ class NurseController extends Controller
     	$pressure = $request->input('pressure');
 
     	$error = [];
-    	if($height == null){
+    	if(!$height){
     		$error[] = 'height_not_found';
     	}
     	if(!$weight){
