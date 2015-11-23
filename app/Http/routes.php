@@ -56,6 +56,8 @@ Route::get('/doctor','DoctorController@doctor');
 
 Route::post('/drug-record/create','DoctorController@drugRecord');
 
+Route::post('/drug-record/update/{drug_id}','DoctorController@drugRecordUpdate');
+
 //-------MakeAppointmentController-----------
 Route::get('/test','MakeAppointmentController@test'); //test
 
