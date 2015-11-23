@@ -56,7 +56,7 @@ class StaffEditController extends Controller
                 ]);
         }
 
-        $employee = HospitalEmployee::where('valid',fam_close(fam))
+        $employee = HospitalEmployee::where('valid',false)
                     ->select('emp_id','firstname','lastname','tel','email','role','specialty')
                     ->get();
 
