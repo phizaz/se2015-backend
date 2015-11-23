@@ -19,8 +19,8 @@ class CreatePatientReportsTable extends Migration
             $table->double('height');
             $table->double('weight');
             $table->string('pressure');
-            $table->string('information');
-            $table->datetime('date');
+            // $table->string('information');
+            // $table->datetime('date');
             
             $table->timestamps();
         });

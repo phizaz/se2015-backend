@@ -108,7 +108,8 @@ class HospitalEmployeeController extends Controller
         // $emp = HospitalEmployee::where('emp_id',$employeeId);
         if (!HospitalEmployee::isHospitalEmployee()){
             return response()->json([
-                "success" => false
+                "success" => false,
+                "error" => 'notlogin or notvalid'
                 ]);
         }
 
