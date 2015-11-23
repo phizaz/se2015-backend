@@ -68,8 +68,8 @@ class NurseController extends Controller
     	$weight = $request->input('weight');
     	$pressure = $request->input('pressure');
 
-    	$error = []
-    	if(!$height){
+    	$error = [];
+    	if($height == null){
     		$error[] = 'height_not_found';
     	}
     	if(!$weight){
@@ -86,11 +86,17 @@ class NurseController extends Controller
     			]);
     	}
 
-    	$patient = PatientReport::where('patient_id',$patientId)->first();
+    	$patient = new patientReport();
+    	$patient->patient_id = $patientId;
     	$patient->height = $height;
     	$patient->weight = $weight;
     	$patient->pressure = $pressure;
     	$patient->save();
+
+    	return response()->json([
+    		"success" => true,
+ 			"meessage" => 'saved record patient'
+    		]);
 
 
     }
