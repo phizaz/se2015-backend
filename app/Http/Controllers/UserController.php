@@ -11,7 +11,6 @@ use App\Patient;
 use App\User;
 use App\HospitalEmployee;
 use Illuminate\Support\Facades\Hash;
-use App\User;
 use App\DoctorTime;  //ลองๆ
 //use App\Http\Controllers\Controller;
 //  use Illuminate\Http\Response;
@@ -21,7 +20,7 @@ class UserController extends Controller {
     public function islogin(Request $request) {
 
         if(Auth::check()) {
-            // if(Auth::user()->userable->role == 'Doctor') 
+            // if(Auth::user()->userable->role == 'Doctor')
             //     $appointments = Appointment::getAppointmentDoctor(Auth::user()->userable->emp_id);
             // else if(Auth::user()->userable->role == null) {
             //     $appointments = Appointment::getAppointmentPatient(Auth::user()->userable->patient_id);
