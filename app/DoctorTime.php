@@ -14,13 +14,13 @@ class DoctorTime extends Model
     //------------------getDoctorTimeByDoctor----------------------------
     public static function getByDoctor($doctor_id) {
         $doctorTime[] = DoctorTime::where('doctor_id',$doctor_id)->get();
-        return $doctorTime;
+        return ["success"=>true, "data" =>$doctorTime];
     }
 
     //-----------------getDoctorTimeBySpecialty-------------------------
     public static function getByspecialty($specialty) {
         $doctorTime[] = DoctorTime::where('specialty',$specialty)->get();
-        return $doctorTime;
+        return ["success"=>true, "data" =>$doctorTime];
     }
     
     //not finish
@@ -37,7 +37,7 @@ class DoctorTime extends Model
         // DB::table('DoctorTime')->where('doctorTime_id',$doctorTime_id)->update(array('doctorTime_begin' => $newDoctorTime_begin,
         //                           'doctorTime_end' => $newDoctorTime_end));
 
-        return array($doctorTime);
+        return  ["success"=>true, "data" =>array($doctorTime)];
     }
 
 
@@ -63,7 +63,7 @@ class DoctorTime extends Model
         $doctorTime->doctorTime_begin = $doctorTime_begin;
         $doctorTime->doctorTime_end = $doctorTime_end;
         $doctorTime->save();
-        return array($doctorTime);
+        return  ["success"=>true, "data" =>array($doctorTime)];
     }
 
     //---------------------------getFreeSlotByDoctor-----------------------------
@@ -140,13 +140,8 @@ class DoctorTime extends Model
             if($del)
                 Appointment::deleteAppointment($appointment->appointment_id);
         }
-        return ["refresh" => true];
+        $docTime = DoctorTime::orderBy('doctorTime_begin','asc')->where('doctor_id',$doctor_id)->get();
+        return ["success" => true,"new doctorTime" => $docTime];
     }
     
-    public static function isSameDay(DateTime $time1, DaateTime $time2) {
-        if($time1->format("y-m-d") == $time2->format("y-m-d"))
-            return true;
-        else
-            return false;
-    }
 }

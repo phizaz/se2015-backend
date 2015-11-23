@@ -14,8 +14,8 @@ use App\HospitalEmployee;
 use Illuminate\Support\Facades\Hash;
 use App\DoctorTime;  //ลองๆ
 
-//use App\Http\Controllers\Controller;
-//  use Illuminate\Http\Response;
+use App\Http\Controllers\Controller;
+  use Illuminate\Http\Response;
 class UserController extends Controller {
 
 //===============================Login==========================================
