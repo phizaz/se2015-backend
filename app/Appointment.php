@@ -12,8 +12,38 @@ class Appointment extends Model
 
 	}
     //done
-	public static function makeAppointment($search_type, $search_string, 
-                                           $emp_id, $patient_id, $datetime) {
+	// public static function makeAppointment($search_type, $search_string, 
+ //                                           $emp_id, $patient_id, $datetime) {
+ //        $error = [];
+ //        if($datetime == null)
+ //            $error[] = 'datetime_not_found';
+ //        if($patient_id == null)
+ //            $error[] = 'patient_id_not_found';
+ //        if($emp_id == null)
+ //            $error[] = 'emp_id_not_found';
+ //        if($search_type == null)
+ //            $error[] = 'search_type_not_found';
+ //        if($search_string == null)
+ //            $error[] = 'search_string_not_found';
+ //        if(Appointment::where('time',$datetime)->where('emp_id',$emp_id)->first())
+ //            $error[] = 'this_time_not_available';
+
+ //        if(sizeof($error)==0) {
+ //            $appointment = new Appointment();
+ //            $appointment->time = $datetime;
+ //            $appointment->emp_id = $emp_id;
+ //            $appointment->patient_id = $patient_id;
+ //            $appointment->filterType = $search_type;
+ //            $appointment->filterString = $search_string;
+
+ //            $appointment->save();
+ //            return ["success" => true, "data" => $appointment->toArray()];
+ //        }
+ //        else 
+ //            return ["success" => false, "message" => $error];
+	// }
+
+    public static function makeAppointment($emp_id, $patient_id, $datetime) {
         $error = [];
         if($datetime == null)
             $error[] = 'datetime_not_found';
@@ -21,10 +51,6 @@ class Appointment extends Model
             $error[] = 'patient_id_not_found';
         if($emp_id == null)
             $error[] = 'emp_id_not_found';
-        if($search_type == null)
-            $error[] = 'search_type_not_found';
-        if($search_string == null)
-            $error[] = 'search_string_not_found';
         if(Appointment::where('time',$datetime)->where('emp_id',$emp_id)->first())
             $error[] = 'this_time_not_available';
 
@@ -33,15 +59,13 @@ class Appointment extends Model
             $appointment->time = $datetime;
             $appointment->emp_id = $emp_id;
             $appointment->patient_id = $patient_id;
-            $appointment->filterType = $search_type;
-            $appointment->filterString = $search_string;
 
             $appointment->save();
             return ["success" => true, "data" => $appointment->toArray()];
         }
         else 
             return ["success" => false, "message" => $error];
-	}
+    }
 
 
 	public static function bookAppointment($doctor_id, $patinet_id, $datetime) {
@@ -80,11 +104,16 @@ class Appointment extends Model
         //             "message" => 'this_patient_does_not_exist_in_database'
         //            ];
 
-    	$appointment = Appointment::where('patient_id',$patient_id)->get();
-    	if(sizeof($appointment)>0)
-    		return $appointment;
+    	$appointments = Appointment::orderBy('time','desc')->where('patient_id',$patient_id)->get();
+        $result = [];
+        foreach ($appointments as $appointment) {
+            $doctor = HospitalEmployee::where('emp_id',$appointment->emp_id)->first();
+            $result[] = ["doctor" => $doctor,"appointment" => $appointment];
+        }
+    	if(sizeof($appointments)>0)
+    		return $result;
     	else 
-    		return ["message" => 'no_appointment_for_this_patient']; 
+    		return []; 
     }
 
     //Done
@@ -95,11 +124,16 @@ class Appointment extends Model
             return ["success" => false,
                     "message" => 'patient_not_found'
                    ];
-        $appointment = Appointment::where('emp_id',$doctor_id)->get();
-        if(sizeof($appointment)>0)
-            return $appointment;
+        $appointments = Appointment::orderBy('time','desc')->where('emp_id',$doctor_id)->get();
+        $result = [];
+        foreach ($appointments as $appointment) {
+            $patient = Patient::where('id',$appointment->patient_id)->first();
+            $result[] = ["patient" => $patient,"appointment" => $appointment];
+        }
+        if(sizeof($appointments)>0)
+            return $result;
         else 
-            return ["message" => 'no_appointment_for_this_doctor']; 
+            return []; 
     }
 
     //Done
@@ -110,7 +144,7 @@ class Appointment extends Model
     }
 
     public static function getLastAppointment($patient_id) {
-
+        return array(Appointment::order('time','desc')->where('patient_id',$patient_id)->first());
     }
 
 }

@@ -22,4 +22,14 @@ class User extends Model implements  AuthenticatableContract,
     public function userable() {
       return $this->morphTo();
     }
+
+    public static function getUserAppointment(User $user) {
+    	if($user->userable->role == 'Doctor') 
+            $appointments = Appointment::getAppointmentDoctor($user->userable->emp_id);
+        else if($user->userable->role == null) 
+            $appointments = Appointment::getAppointmentPatient($user->userable->id);
+        else
+        	$appointments = null;
+        return  $appointments;
+    }
 }

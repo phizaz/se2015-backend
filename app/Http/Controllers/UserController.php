@@ -5,14 +5,16 @@ namespace App\Http\Controllers;
 use Auth;                    //for authentication
 //Illuminate\Routing\Controller;
 //use Illuminate\Auth;
+
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Patient;
 use App\User;
 use App\HospitalEmployee;
 use Illuminate\Support\Facades\Hash;
-
+use App\User;
 use App\DoctorTime;  //ลองๆ
+
 //use App\Http\Controllers\Controller;
 //  use Illuminate\Http\Response;
 class UserController extends Controller {
@@ -21,8 +23,14 @@ class UserController extends Controller {
     public function islogin(Request $request) {
 
         if(Auth::check()) {
+            // if(Auth::user()->userable->role == 'Doctor') 
+            //     $appointments = Appointment::getAppointmentDoctor(Auth::user()->userable->emp_id);
+            // else if(Auth::user()->userable->role == null) {
+            //     $appointments = Appointment::getAppointmentPatient(Auth::user()->userable->patient_id);
+            $appointments = User::getUserAppointment(Auth::user());
             return response()->json(["login" => true,
-                                     "data" => Auth::user()->userable->toArray()
+                                     "data" => Auth::user()->userable->toArray(),
+                                     "appointments" => $appointments
                                     ]);
         } else
             return response()->json(["login" => false
@@ -56,10 +64,11 @@ class UserController extends Controller {
         Auth::login($user);
 
         $result = Auth::user()->userable->toArray();
-
+        $appointments = User::getUserAppointment(Auth::user());
         return response()->json([
             'success' => true,
             'data' => $result,
+            'appointment' => $appointments
             ]);
     }
 
@@ -77,5 +86,7 @@ class UserController extends Controller {
             'success' => true
             ]);
     }
+
+    
 
 }
