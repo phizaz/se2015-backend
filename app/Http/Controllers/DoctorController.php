@@ -8,10 +8,16 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\HospitalEmployee;
 use App\drugRecord;
+// use App\Http\Controllers\DateTime;
+use DateTime;
+use App\SymptomReport;
+// use App\Http\Controllers\timestamps;
+use App\TimeEntry;
 
 class DoctorController extends Controller
 {
     
+
     public function drugRecord(Request $request){
 
          if (!HospitalEmployee::isDoctor()){
@@ -121,6 +127,46 @@ class DoctorController extends Controller
             "success" => true,
             "meessage" => 'deleted drug record'
             ]);
+
+    }
+
+    public function symptomReportCreate(Request $request){
+
+        if (!HospitalEmployee::isDoctor()){
+            return response()->json([
+                "success" => false,
+                "error" => 'notlogin or notvalid'
+                ]);
+        }
+
+        $report = $request->input('name');
+        $patientId = $request->input('patient_id');
+
+        $error = [];
+        if(!$report){
+            $error[] = 'report_not_found';
+        }
+        if(!$patientId){
+            $error[] = 'patient_id_not_found';
+        }
+
+        if(sizeof($error) != 0){
+            return response()->json([
+                "success" => false,
+                "message" => $error
+            ]);
+        }
+
+        $symptom = new SymptomReport();
+        $symptom->report= $report;
+        $symptom->patient_id = $patientId;
+        $symptom->date = new DateTime('now');
+        $symptom->save();
+
+        return response()->json([
+            "success" => true,
+            "meessage" => 'saved symptom report'
+            ]);        
 
     }
 

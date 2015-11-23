@@ -86,6 +86,6 @@ class UserController extends Controller {
             ]);
     }
 
-    
+
 
 }

@@ -127,18 +127,26 @@ class DoctorTime extends Model
         $appointments = Appointment::where('emp_id',$doctor_id)->get();
         $doctorTimes = DoctorTime::where('doctor_id',$doctor_id)->get();
         foreach($appointments as $appointment) {
+            $aptime = new DateTime($appointment->time);
+            $del = true;
             foreach($doctorTimes as $doctorTime) {
-                //ถ้า appointment และ doctorTime อยู่ในวันเดียวกัน
-                // if(($appoinment->time)->format("y-m-d") == ($doctorTime->doctorTime_begin)->format("y-m-d")) {
-                if($appoinment->time->format("y-m-d") == $doctorTime->doctorTime_begin->format("y-m-d")) {
-                    if(Datetime($appointment)->time < Datetime($doctorTime->doctorTime_begin) || 
-                        Datetime($appointment)->time > Datetime($doctorTime_end)) {
-                        Appointment::deleteAppointment($appontment->appointment_id);
-                    }
+                $begin = new DateTime($doctorTime->doctorTime_begin);
+                $end = new DateTime($doctorTime->doctorTime_end);
+
+                if($aptime >= $begin && $aptime < $end) {
+                    $del = false;
                 }
             }
+            if($del)
+                Appointment::deleteAppointment($appointment->appointment_id);
         }
         return ["refresh" => true];
     }
     
+    public static function isSameDay(DateTime $time1, DaateTime $time2) {
+        if($time1->format("y-m-d") == $time2->format("y-m-d"))
+            return true;
+        else
+            return false;
+    }
 }
