@@ -11,29 +11,7 @@ use App\drugRecord;
 
 class DoctorController extends Controller
 {
-    public function doctor (){
-        
-        $getDoctor = [];
-            
-        $doctors = HospitalEmployee::where('role','Doctor')->where('valid',true)->get();
-
-
-        foreach ($doctors as $doctor) {
-           
-            $getDoctor[] = ['firstname' => $doctor->firstname,
-                            'lastname' => $doctor->lastname, 
-                            'id' => $doctor->emp_id, 
-                            'specialty' => $doctor->specialty];
-        }
-
-        return response()->json([
-                "success" => true,
-                "data" => $getDoctor
-
-            ]);
-
-    }
-
+    
     public function drugRecord(Request $request){
 
          if (!HospitalEmployee::isDoctor()){
