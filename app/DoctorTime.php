@@ -13,7 +13,7 @@ class DoctorTime extends Model
 
     //------------------getDoctorTimeByDoctor----------------------------
     public static function getByDoctor($doctor_id) {
-        $doctorTime[] = DoctorTime::where('doctor_id',$doctor_id)->get();
+        $doctorTime = DoctorTime::where('doctor_id',$doctor_id)->get();
         return ["success"=>true, "data" =>$doctorTime];
     }
 
@@ -22,9 +22,9 @@ class DoctorTime extends Model
         $doctorTime[] = DoctorTime::where('specialty',$specialty)->get();
         return ["success"=>true, "data" =>$doctorTime];
     }
-    
+
     //not finish
-    public static function editDoctorTime($doctorTime_id, DateTime $newDoctorTime_begin, 
+    public static function editDoctorTime($doctorTime_id, DateTime $newDoctorTime_begin,
                                             DateTime $newDoctorTime_end) {
         echo 'dsdfd';
         $doctorTime = DoctorTime::where('doctorTime_id',$doctorTime_id)->first();
@@ -59,7 +59,7 @@ class DoctorTime extends Model
                                     ];
         //----------------------------------------------------------------------^^
         $doctorTime = new DoctorTime();
-        $doctorTime->doctor_id = $doctor_id; 
+        $doctorTime->doctor_id = $doctor_id;
         $doctorTime->doctorTime_begin = $doctorTime_begin;
         $doctorTime->doctorTime_end = $doctorTime_end;
         $doctorTime->save();
@@ -76,10 +76,10 @@ class DoctorTime extends Model
             $count = 0;
             $begin = new Datetime($doctorTime->doctorTime_begin);
             $end = new DateTime($doctorTime->doctorTime_end);
-    
+
             if ( $begin->format("s") =='00' )
                 $begin->add( new DateInterval('PT0H0M1S'));
-            
+
             while($begin < $end) {
                 if(Appointment::where('time',$begin)->
                                 where('emp_id',$doctorTime->doctor_id)->first() ){
@@ -91,7 +91,7 @@ class DoctorTime extends Model
                     }
                 }
                 else if($count == 0){
-                    $freeSlot[] = ["doctorTime_begin" => new DateTime($begin->format("y-m-d H:i:s"))]; 
+                    $freeSlot[] = ["doctorTime_begin" => new DateTime($begin->format("y-m-d H:i:s"))];
                     $count = 1;
                 }
                 $begin->add( new DateInterval('PT0H15M00S'));
@@ -102,8 +102,8 @@ class DoctorTime extends Model
                 $count = 0;
             }
         }
-        
-        return ["datetime" => $freeSlot, 
+
+        return ["datetime" => $freeSlot,
                 "doctor" => HospitalEmployee::where('emp_id',$doctor_id)->first()
                ];
     }
@@ -143,5 +143,5 @@ class DoctorTime extends Model
         $docTime = DoctorTime::orderBy('doctorTime_begin','asc')->where('doctor_id',$doctor_id)->get();
         return ["success" => true,"new doctorTime" => $docTime];
     }
-    
+
 }

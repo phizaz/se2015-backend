@@ -17,47 +17,49 @@ class DoctorTimeController extends Controller
      * @return \Illuminate\Http\Response
      */
 
- 
+
 //----------------------Function in List from Google Drive-------------------------
     //Done
     public function getDoctorAppointment($doctor_id) {
         if(!HospitalEmployee::isDoctor())
             return response()->json([
                 "success" => false,
-                "error" => 'notlogin or notvalid'
+                "messages" => ['notlogin or notvalid']
                 ]);
 
         $appointments = Appointment::where('emp_id',$doctor_id)->get();
-        return response()->json($appointments);
-    }  
+        return response()->json([
+            'success' => true,
+            'data' => $appointments
+        ]);
+    }
 
     //Done
     public function getByDoctor($doctor_id) {
         if(!HospitalEmployee::isDoctor())
             return response()->json([
                 "success" => false,
-                "error" => 'notlogin or notvalid'
+                "messages" => ['notlogin or notvalid']
                 ]);
         // if(!HospitalEmployee::isDoctor())
         //     return response()->json(["success" = false];
         return response()->json( DoctorTime::getByDoctor($doctor_id) );
     }
 
-    
+
     //Input = {"delete":[23],"doctor_id":1,"create":[{"start":"2015-01-01 8:00:00","end":"2015-01-01 12:00:00"},{"start":"2015-01-01 14:00:00","end":"2015-01-01 16:00:00"}]}
     public function editDoctorTime(Request $request) {
         if(!HospitalEmployee::isDoctor())
             return response()->json([
                 "success" => false,
-                "error" => 'notlogin or notvalid'
+                "messages" => ['notlogin or notvalid']
                 ]);
 
         $string = $request->input("data");
         //$string = '{"delete":[37,38,39,40],"doctor_id":1,"create":[{"start":"2015-01-01 8:00:00","end":"2015-01-01 12:00:00"},{"start":"2015-01-01 14:00:00","end":"2015-01-01 16:00:00"}]}';
         $data = json_decode($string);
-        $result = [];
         $doctor_id = $data->doctor_id;
-        
+
 
         foreach($data->delete as $delete_id) {
             //echo $delete_id;
@@ -77,8 +79,9 @@ class DoctorTimeController extends Controller
         }
         //เรียก fuction refresh เพื่อไล่ check ว่า appointmentไหนไม่อยู่ในเวลาที่แพทย์สะดวกบ้างให้ลบทิ้ง
         //echo 'sdsd';
-        $result[] = DoctorTime::refreshDoctorTime($doctor_id) ;
-        return response()->json($result); 
+        $result = DoctorTime::refreshDoctorTime($doctor_id) ;
+
+        return response()->json($result);
     }
 
     //Done
@@ -88,7 +91,7 @@ class DoctorTimeController extends Controller
         if(!HospitalEmployee::isDoctor())
             return response()->json([
                 "success" => false,
-                "error" => 'notlogin or notvalid'
+                "messages" => ['notlogin or notvalid']
                 ]);
 
         $doctorTime_begin = new Datetime($request->input('startTime'));
@@ -103,7 +106,7 @@ class DoctorTimeController extends Controller
         if(!HospitalEmployee::isDoctor())
             return response()->json([
                 "success" => false,
-                "error" => 'notlogin or notvalid'
+                "messages" => ['notlogin or notvalid']
                 ]);
 
         // if(!HospitalEmployee::isDoctor())
@@ -112,5 +115,5 @@ class DoctorTimeController extends Controller
         if($doctorTime)
             $doctorTime->delete();
         return response()->json(["success" => true]);
-    }   
+    }
 }
