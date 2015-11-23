@@ -18,7 +18,8 @@ class StaffEditController extends Controller
 
         if (!HospitalEmployee::isStaff()){
             return response()->json([
-                "success" => false
+                "success" => false,
+                "error" => 'notlogin or notvalid'
                 ]);
         }
         $firstname = $request->firstname;
@@ -50,11 +51,12 @@ class StaffEditController extends Controller
 
         if (!HospitalEmployee::isStaff()){
             return response()->json([
-                "success" => false
+                "success" => false,
+                "error" => 'notlogin or notvalid'
                 ]);
         }
 
-        $employee = HospitalEmployee::where('valid',false)
+        $employee = HospitalEmployee::where('valid',fam_close(fam))
                     ->select('emp_id','firstname','lastname','tel','email','role','specialty')
                     ->get();
 
@@ -69,7 +71,8 @@ class StaffEditController extends Controller
 
         if (!HospitalEmployee::isStaff()){
             return response()->json([
-                "success" => false
+                "success" => false,
+                "error" => 'notlogin or notvalid'
                 ]);
         }
 
@@ -87,7 +90,8 @@ class StaffEditController extends Controller
     public function discardStaff($empId){
         if (!HospitalEmployee::isStaff()){
             return response()->json([
-                "success" => false
+                "success" => false,
+                "error" => 'notlogin or notvalid'
                 ]);
         }
 
@@ -96,7 +100,8 @@ class StaffEditController extends Controller
         if($emp->valid){
             // echo 'valid=false';
             return response()->json([
-                "success" => false
+                "success" => false,
+                "error" => 'valid = true'
                 ]);
         }
 
