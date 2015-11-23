@@ -54,6 +54,8 @@ Route::get('/hospital-employee/{emp_id}/photo','HospitalEmployeeController@getPh
 //-------DoctorContorller-----------
 Route::get('/doctor','DoctorController@doctor');
 
+Route::post('/drug-record/create','DoctorController@drugRecord');
+
 //-------MakeAppointmentController-----------
 Route::get('/test','MakeAppointmentController@test'); //test
 
