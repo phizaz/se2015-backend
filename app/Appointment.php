@@ -80,7 +80,7 @@ class Appointment extends Model
         //             "message" => 'this_patient_does_not_exist_in_database'
         //            ];
 
-    	$appointments = Appointment::where('patient_id',$patient_id)->get();
+    	$appointments = Appointment::orderBy('time','desc')->where('patient_id',$patient_id)->get();
         $result = [];
         foreach ($appointments as $appointment) {
             $doctor = HospitalEmployee::where('emp_id',$appointment->emp_id)->first();
@@ -100,7 +100,7 @@ class Appointment extends Model
             return ["success" => false,
                     "message" => 'patient_not_found'
                    ];
-        $appointments = Appointment::where('emp_id',$doctor_id)->get();
+        $appointments = Appointment::orderBy('time','desc')->where('emp_id',$doctor_id)->get();
         $result = [];
         foreach ($appointments as $appointment) {
             $patient = Patient::where('id',$appointment->patient_id)->first();
