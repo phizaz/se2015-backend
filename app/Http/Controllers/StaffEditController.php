@@ -22,8 +22,17 @@ class StaffEditController extends Controller
                 "error" => 'notlogin or notvalid'
                 ]);
         }
-        $firstname = $request->firstname;
-        $lastname = $request->lastname;
+        $firstname = $request->input('firstname');
+        $lastname = $request->input('lastname');
+
+        if ($firstname && !$lastname) {
+            $lastname = 'unabletoguess';
+        }
+
+        if (!$firstname && $lastname) {
+            $firstname = 'unabletoguess';
+        }
+
         $patients = Patient::where('firstname','LIKE',"%$firstname%")
                     ->orWhere('lastname','LIKE',"%$lastname%")
                     ->select('id','firstname','lastname','birthdate','address','gender','nationality','bloodtype','tel')
@@ -34,7 +43,7 @@ class StaffEditController extends Controller
         foreach ($patients as $patApp) {
             $a = $patApp->futureAppointments();
             // $patApp[] = $a;
-            
+
             $c = $patApp->toArray();
             $c['appointments'] = $a->toArray();
             // echo 'kk';
@@ -84,7 +93,7 @@ class StaffEditController extends Controller
         return response()->json([
                 "success" => true
                 ]);
-        
+
     }
 
     public function discardStaff($empId){
