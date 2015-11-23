@@ -15,7 +15,8 @@ class NurseController extends Controller
     public function getPatient (Request $request){
         if(!HospitalEmployee::isNurse()){
         	return response()->json([
-        		"success" => false
+        		"success" => false,
+                "error" => 'notlogin or notvalid'
         		]);
         }
 
@@ -53,4 +54,45 @@ class NurseController extends Controller
         	]);
 
     }
+
+    public function patientReport(Request $request,$patientId){
+    	
+    	if(!HospitalEmployee::isNurse()){
+        	return response()->json([
+        		"success" => false,
+                "error" => 'notlogin or notvalid'
+        		]);
+        }
+
+    	$height = $request->input('height');
+    	$weight = $request->input('weight');
+    	$pressure = $request->input('pressure');
+
+    	$error = []
+    	if(!$height){
+    		$error[] = 'height_not_found';
+    	}
+    	if(!$weight){
+    		$error[] = 'weight_not_found';
+    	}
+    	if(!$pressure){
+    		$error[] = 'pressure_not_found';
+    	}
+
+    	if(sizeof($error) != 0){
+    		return response()->json([
+    			"success" => false,
+    			"message" => $error
+    			]);
+    	}
+
+    	$patient = PatientReport::where('patient_id',$patientId)->first();
+    	$patient->height = $height;
+    	$patient->weight = $weight;
+    	$patient->pressure = $pressure;
+    	$patient->save();
+
+
+    }
+
 }

@@ -16,12 +16,12 @@ class StaffEditController extends Controller
 {
     public function getPatient(Request $request){
 
-        // if (!HospitalEmployee::isStaff()){
-        //     return response()->json([
-        //         "success" => false,
-        //         "error" => 'notlogin or notvalid'
-        //         ]);
-        // }
+        if (!HospitalEmployee::isStaff()){
+            return response()->json([
+                "success" => false,
+                "error" => 'notlogin or notvalid'
+                ]);
+        }
         $firstname = $request->firstname;
         $lastname = $request->lastname;
         $patients = Patient::where('firstname','LIKE',"%$firstname%")
@@ -49,12 +49,12 @@ class StaffEditController extends Controller
 
     public function getUnconfirmedStaff(){
 
-        // if (!HospitalEmployee::isStaff()){
-        //     return response()->json([
-        //         "success" => false,
-        //         "error" => 'notlogin or notvalid'
-        //         ]);
-        // }
+        if (!HospitalEmployee::isStaff()){
+            return response()->json([
+                "success" => false,
+                "error" => 'notlogin or notvalid'
+                ]);
+        }
 
         $employee = HospitalEmployee::where('valid',false)
                     ->select('emp_id','firstname','lastname','tel','email','role','specialty')
@@ -69,12 +69,12 @@ class StaffEditController extends Controller
 
     public function approveStaff($empId){
 
-        // if (!HospitalEmployee::isStaff()){
-        //     return response()->json([
-        //         "success" => false,
-        //         "error" => 'notlogin or notvalid'
-        //         ]);
-        // }
+        if (!HospitalEmployee::isStaff()){
+            return response()->json([
+                "success" => false,
+                "error" => 'notlogin or notvalid'
+                ]);
+        }
 
         // DB::table('HospitalEmployee')->where('emp_id',$empId)->update(['valid' => true]);
         $emp = HospitalEmployee::find($empId);
@@ -88,21 +88,21 @@ class StaffEditController extends Controller
     }
 
     public function discardStaff($empId){
-        // if (!HospitalEmployee::isStaff()){
-        //     return response()->json([
-        //         "success" => false,
-        //         "error" => 'notlogin or notvalid'
-        //         ]);
-        // }
+        if (!HospitalEmployee::isStaff()){
+            return response()->json([
+                "success" => false,
+                "error" => 'notlogin or notvalid'
+                ]);
+        }
 
         $emp = HospitalEmployee::where('emp_id',$empId)->first();
         $usr = User::find($empId);
-        // if($emp->valid){
-        //     // echo 'valid=false';
-        //     return response()->json([
-        //         "success" => false,
-        //         "error" => 'valid = true'
-        //         ]);
+        if($emp->valid){
+            // echo 'valid=false';
+            return response()->json([
+                "success" => false,
+                "error" => 'valid = true'
+                ]);
         }
 
 
