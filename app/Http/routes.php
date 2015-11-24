@@ -30,13 +30,10 @@ Route::post('/register/uploadPhoto/{patient_id}','PatientController@uploadPhoto'
 Route::get('/patient/{patient_id}/picture','PatientController@getPhoto');
 
 //-------DoctorTimeController--------------
-Route::post('/addDoctorTime','DoctorTimeController@addDoctorTime');
 
 Route::get('/doctor/{doctor_id}/appointments','DoctorTimeController@getDoctorAppointment');
 
 Route::get('/doctor/{doctor_id}/doctor-time','DoctorTimeController@getByDoctor');
-
-//Route::post('/doctor/update-doctor-time/{doctor_time_id}','DoctorTimeController@editDoctorTime');
 
 Route::post('/doctor/update-doctor-time','DoctorTimeController@editDoctorTime');
 
@@ -74,8 +71,6 @@ Route::post('/drug-allergic/{patient_id}','DoctorController@drugAllergic');
 Route::get('/find-options/doctor/{doctor_id}','MakeAppointmentController@getFreeSlotByDoctor');
 
 Route::get('/find-options/specialty/{specialty}','MakeAppointmentController@getFreeSlotBySpecialty');
-
-Route::post('/deleteAppointment','MakeAppointmentController@deleteAppointment');
 
 Route::get('/getAppointmentPatient','MakeAppointmentController@getAppointmentPatient');
 

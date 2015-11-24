@@ -18,6 +18,7 @@ use App\Patient;
 class DoctorController extends Controller
 {
     
+
     public function drugRecord(Request $request){
 
          if (!HospitalEmployee::isDoctor()){

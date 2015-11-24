@@ -32,7 +32,7 @@ class HospitalEmployeeController extends Controller
         $email = $request->input('email');
         $role = $request->input('role');
         $specialty = $request->input('specialty');
-        $valid = $request->input('valid');
+        // $valid = $request->input('valid');
 
         // username not repeat
         // fill all request
