@@ -169,4 +169,40 @@ class DoctorController extends Controller
 
     }
 
+    public function symptomReportUpdate (Request $request,$sympId){
+
+        if (!HospitalEmployee::isDoctor()){
+            return response()->json([
+                "success" => false,
+                "error" => 'notlogin or notvalid'
+                ]);
+        }
+
+        $report = $request->input('report');
+
+        $error = [];
+        if(!$report){
+            $error[] = 'report_not_found';
+        }
+
+        if(sizeof($error) != 0){
+            return response()->json([
+                "success" => false,
+                "message" => $error
+            ]);
+        }
+
+        $sypmtom = SymptomReport::orderBy('symptom_id','desc')
+                                  ->where('symptom_id',$sympId)
+                                  ->first();
+        $sypmtom->report = $report;
+        $sypmtom->save();
+
+        return response()->json([
+            "success" => true,
+            "meessage" => 'saved sypmtom record'
+            ]);
+
+    }
+
 }

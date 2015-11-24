@@ -61,7 +61,9 @@ Route::post('/drug-record/update/{drug_id}','DoctorController@drugRecordUpdate')
 
 Route::post('/drug-record/delete/{drug_id}','DoctorController@drugRecordDelete');
 
-route::post('/symptom-report/create','DoctorController@symptomReportCreate');
+Route::post('/symptom-report/create','DoctorController@symptomReportCreate');
+
+Route::post('/symptom-report/update/{symptom_id}','DoctorController@symptomReportUpdate');
 
 //-------MakeAppointmentController-----------
 
