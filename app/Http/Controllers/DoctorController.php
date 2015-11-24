@@ -13,6 +13,7 @@ use DateTime;
 use App\SymptomReport;
 // use App\Http\Controllers\timestamps;
 use App\TimeEntry;
+use App\Patient;
 
 class DoctorController extends Controller
 {
@@ -220,6 +221,40 @@ class DoctorController extends Controller
         return response()->json([
             "success" => true,
             "meessage" => 'deleted symptom record'
+            ]);
+
+    }
+
+    public function drugAllergic(Request $request,$patientId){
+
+        if (!HospitalEmployee::isDoctor()){
+            return response()->json([
+                "success" => false,
+                "error" => 'notlogin or notvalid'
+                ]);
+        }
+
+        $drugAllergic = $request->input('drugAllergic');
+
+        $error = [];
+        if(!$drugAllergic){
+            $error[] = 'drugAllergic_not_found';
+        }
+
+        if(sizeof($error) != 0){
+            return response()->json([
+                "success" => false,
+                "message" => $error
+            ]);
+        }
+
+        $drAllergic = Patient::where('id',$patientId)->first();
+        $drAllergic->drugAllergic = $drugAllergic;
+        $drAllergic->save();
+
+        return response()->json([
+            "success" => true,
+            "meessage" => 'saved drugAllergic record'
             ]);
 
     }

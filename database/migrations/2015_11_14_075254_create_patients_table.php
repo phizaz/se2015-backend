@@ -31,6 +31,7 @@ class CreatePatientsTable extends Migration
             $table->string('remark')->nullable();
             $table->integer('priority')->default(0);
             $table->string('photo_extension');
+            $table->string('drugAllergic');
             
             $table->timestamps();
         });
