@@ -205,4 +205,23 @@ class DoctorController extends Controller
 
     }
 
+    public function symptomReportDelete ($symptomId){
+
+        if (!HospitalEmployee::isDoctor()){
+            return response()->json([
+                "success" => false,
+                "error" => 'notlogin or notvalid'
+                ]);
+        }
+
+        $symptom = SymptomReport::where('symptom_id',$symptomId)->first();
+        $symptom->delete();
+
+        return response()->json([
+            "success" => true,
+            "meessage" => 'deleted symptom record'
+            ]);
+
+    }
+
 }

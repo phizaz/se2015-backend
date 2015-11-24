@@ -65,6 +65,8 @@ Route::post('/symptom-report/create','DoctorController@symptomReportCreate');
 
 Route::post('/symptom-report/update/{symptom_id}','DoctorController@symptomReportUpdate');
 
+Route::post('/symptom-report/delete/{symptom_id}','DoctorController@symptomReportDelete');
+
 //-------MakeAppointmentController-----------
 
 Route::get('/find-options/doctor/{doctor_id}','MakeAppointmentController@getFreeSlotByDoctor');
