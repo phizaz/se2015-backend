@@ -44,25 +44,25 @@ class PatientController extends Controller
       $tel = $request->input('tel');
       $remark = $request->input('remark');
 
-      if($personal_id == null)
+      if(!$personal_id)
           $error[] = 'personal_id_not_found';
-      if($password == null)
+      if(!$password)
           $error[] = 'password_not_found';
-      if($firstname == null)
+      if(!$firstname)
           $error[] = 'firstname_not_found';
-      if($lastname == null)
+      if(!$lastname)
           $error[] = 'lastname_not_found';
-      if($birthdate == null)
+      if(!$birthdate)
           $error[] = 'birthdate_not_found';
-      if($address == null)
+      if(!$address)
           $error[] = 'address_not_found';
-      if($gender == null)
+      if(!$gender)
           $error[] = 'gender_not_found';
-      if($nationality == null)
+      if(!$nationality)
           $error[] = 'nationality_not_found';
-      if($bloodtype == null)
+      if(!$bloodtype)
           $error[] = 'bloodtype_not_found';
-      if($tel == null)
+      if(!$tel)
           $error[] = 'tel_not_found';
 
       if(sizeof($error)==0) {
@@ -98,9 +98,9 @@ class PatientController extends Controller
       $personal_id = $request->input('personal_id');
       if($personal_id == null)
         return response()->json(["found" => false,
-                                 "message" => 'personal_id_not_found' 
+                                 "message" => 'personal_id_not_found'
                                 ]);
-      
+
       if(Patient::where('personal_id',$request->input('personal_id'))->first())
         return response()->json(["found" => true]);
       else
