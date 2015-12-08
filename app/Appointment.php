@@ -8,11 +8,15 @@ class Appointment extends Model
 {
     protected $primaryKey = 'appointment_id';
 
+    public function doctor() {
+      return $this->belongsTo('App\HospitalEmployee', 'emp_id');
+    }
+
 	public static function sendWarning($emailPatient, $telPatient, $time) {
 
 	}
     //done
-	// public static function makeAppointment($search_type, $search_string, 
+	// public static function makeAppointment($search_type, $search_string,
  //                                           $emp_id, $patient_id, $datetime) {
  //        $error = [];
  //        if($datetime == null)
@@ -39,7 +43,7 @@ class Appointment extends Model
  //            $appointment->save();
  //            return ["success" => true, "data" => $appointment->toArray()];
  //        }
- //        else 
+ //        else
  //            return ["success" => false, "message" => $error];
 	// }
 
@@ -63,7 +67,7 @@ class Appointment extends Model
             $appointment->save();
             return ["success" => true, "data" => $appointment->toArray()];
         }
-        else 
+        else
             return ["success" => false, "message" => $error];
     }
 
@@ -112,8 +116,8 @@ class Appointment extends Model
         }
     	if(sizeof($appointments)>0)
     		return $result;
-    	else 
-    		return []; 
+    	else
+    		return [];
     }
 
     //Done
@@ -132,8 +136,8 @@ class Appointment extends Model
         }
         if(sizeof($appointments)>0)
             return $result;
-        else 
-            return []; 
+        else
+            return [];
     }
 
     //Done
