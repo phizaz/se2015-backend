@@ -8,4 +8,8 @@ class DrugRecord extends Model
 {
     //
     protected $primaryKey = 'drug_id';
+
+    protected $casts = [
+        'quantity' => 'integer',
+    ];
 }

@@ -33,7 +33,16 @@ class DoctorTimeController extends Controller
 
         foreach($appointments as $appointment) {
             $tmp = $appointment->toArray();
-            $tmp['patient'] = $appointment->patient->toArray();
+            $patient = $appointment->patient;
+            $tmp['patient'] = $patient->toArray();
+
+            $patientReport = $patient->latestPatientReport();
+            $tmp['patient']['patientReport'] = $patientReport;
+
+            $tmp['patient']['symptomReports'] = $patient->symptomReports;
+            $tmp['patient']['drugRecords'] = $patient->drugRecords;
+
+
             $appointments_array[] = $tmp;
         }
 

@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 use App\User;
 use App\Appointment;
+use App\PatientReport;
+use App\SymptomReport;
+use App\DrugRecord;
 use Auth;
 
 use DateTime;
@@ -17,6 +20,20 @@ class Patient extends Model
 
     public function user() {
       return $this->morphOne('App\User', 'userable');
+    }
+
+    public function latestPatientReport() {
+      return PatientReport::where('patient_id', $this->id)
+              ->orderBy('patient_id', 'desc')
+              ->first();
+    }
+
+    public function symptomReports() {
+      return $this->hasMany('App\SymptomReport', 'patient_id');
+    }
+
+    public function drugRecords() {
+      return $this->hasMany('App\DrugRecord', 'patient_id');
     }
 
     /**

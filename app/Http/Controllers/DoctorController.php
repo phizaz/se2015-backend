@@ -17,7 +17,7 @@ use App\Patient;
 
 class DoctorController extends Controller
 {
-    
+
 
     public function drugRecord(Request $request){
 
@@ -63,6 +63,7 @@ class DoctorController extends Controller
 
         return response()->json([
             "success" => true,
+            "data" => $drug,
             "meessage" => 'saved drug record'
             ]);
 
@@ -107,6 +108,7 @@ class DoctorController extends Controller
 
         return response()->json([
             "success" => true,
+            "data" => $drug,
             "meessage" => 'saved drug record'
             ]);
 
@@ -140,7 +142,7 @@ class DoctorController extends Controller
                 ]);
         }
 
-        $report = $request->input('name');
+        $report = $request->input('report');
         $patientId = $request->input('patient_id');
 
         $error = [];
@@ -166,8 +168,9 @@ class DoctorController extends Controller
 
         return response()->json([
             "success" => true,
+            "data" => $symptom,
             "meessage" => 'saved symptom report'
-            ]);        
+            ]);
 
     }
 
@@ -194,14 +197,15 @@ class DoctorController extends Controller
             ]);
         }
 
-        $sypmtom = SymptomReport::orderBy('symptom_id','desc')
+        $symptom = SymptomReport::orderBy('symptom_id','desc')
                                   ->where('symptom_id',$sympId)
                                   ->first();
-        $sypmtom->report = $report;
-        $sypmtom->save();
+        $symptom->report = $report;
+        $symptom->save();
 
         return response()->json([
             "success" => true,
+            "data" => $symptom,
             "meessage" => 'saved sypmtom record'
             ]);
 
@@ -255,7 +259,7 @@ class DoctorController extends Controller
 
         return response()->json([
             "success" => true,
-            "meessage" => 'saved drugAllergic record'
+            "message" => 'saved drugAllergic record'
             ]);
 
     }
