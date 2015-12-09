@@ -216,9 +216,7 @@ class DoctorTime extends Model
         $result = [];
         foreach ($doctors as $doctor) {
             $doctor_id = $doctor->emp_id;
-            $result[] = ["datetime" => DoctorTIme::getFreeSlotByDoctor($doctor_id),
-                         "doctor" => $doctor
-                        ];
+            $result = array_merge($result, DoctorTIme::getFreeSlotByDoctor($doctor_id));
         }
         return $result;
     }
