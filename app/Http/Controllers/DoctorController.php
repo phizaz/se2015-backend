@@ -18,10 +18,34 @@ use App\Patient;
 class DoctorController extends Controller
 {
 
+    public function toPharmacist(Request $request, $patientId) {
+        if (!HospitalEmployee::isDoctor()){
+            return response()->json([
+                "success" => false,
+                "error" => 'notlogin or notvalid'
+                ]);
+        }
+
+        $patient = Patient::find($patientId);
+        if (!$patient) {
+            return response()->json([
+                "success" => false,
+                "error" => 'patinet not found'
+                ]);
+        }
+
+        $patient->status = 1;
+        $patient->save();
+
+        return response()->json([
+            'success' => true,
+            'patient' => $patient,
+        ]);
+    }
 
     public function drugRecord(Request $request){
 
-         if (!HospitalEmployee::isDoctor()){
+        if (!HospitalEmployee::isDoctor()){
             return response()->json([
                 "success" => false,
                 "error" => 'notlogin or notvalid'

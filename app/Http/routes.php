@@ -67,6 +67,8 @@ Route::post('/symptom-report/delete/{symptom_id}','DoctorController@symptomRepor
 
 Route::post('/drug-allergic/{patient_id}','DoctorController@drugAllergic');
 
+Route::post('/to-pharmacist/{patient_id}', 'DoctorController@toPharmacist');
+
 //-------MakeAppointmentController-----------
 
 Route::get('/find-options/doctor/{doctor_id}','MakeAppointmentController@getFreeSlotByDoctor');
