@@ -10,12 +10,12 @@ use Auth;
 use App\Patient;
 use App\DoctorTime;
 use App\HospitalEmployee;
-use DateTime; 
+use DateTime;
 use DateInterval;
 class MakeAppointmentController extends Controller
 {
     //----------------------Function in List from Google Drive-------------------------
-    
+
     //Done
     //---------------------------getFreeSlotByDoctor----------------------------
     public function getFreeSlotByDoctor( $doctor_id ) {
@@ -24,7 +24,7 @@ class MakeAppointmentController extends Controller
                 "success" => false,
                 "error" => 'notlogin or notvalid'
                 ]);
-        return response()->json(["success" => true, 
+        return response()->json(["success" => true,
                                  "data" => DoctorTime::getFreeSlotByDoctor($doctor_id)
                                 ]);
     }
@@ -37,7 +37,7 @@ class MakeAppointmentController extends Controller
                 "success" => false,
                 "error" => 'notlogin or notvalid'
                 ]);
-        return response()->json(["success" => true, 
+        return response()->json(["success" => true,
                                  "data" => DoctorTime::getFreeSlotBySpecialty($specialty)
                                 ]);
     }
@@ -53,18 +53,31 @@ class MakeAppointmentController extends Controller
         $datetime =  $request->input('datetime');
         $emp_id = $request->input('doctor_id');
 
-        $patient_id = Auth::user()->userable->id;
-        
-        return response()->json( ["success" => true, 
-                                  "data" => Appointment::makeAppointment($emp_id, $patient_id, $datetime) 
+        if (Patient::isPatient()) {
+            $patient_id = Auth::user()->userable->id;
+        }
+        else if(HospitalEmployee::isStaff()) {
+            if (!$request->input('patient_id')) {
+                return response()->json([
+                    "success" => false,
+                    "error" => 'no_patient_id',
+                ]);
+            }
+
+            $patient_id = $request->input('patient_id');
+        }
+
+
+        return response()->json( ["success" => true,
+                                  "data" => Appointment::makeAppointment($emp_id, $patient_id, $datetime)
                                  ]);
     }
 
     // Mai Tomg Tum Leaw
     public function bookAppointment(Request $request) {
-        
+
     }
-    
+
     //Done
     public function deleteAppointment($appointment_id) {
         if(!Patient::isPatient() && !HospitalEmployee::isStaff() && !HospitalEmployee::isDoctor())
@@ -83,7 +96,7 @@ class MakeAppointmentController extends Controller
                 "error" => 'notlogin or notvalid'
                 ]);
         $patient_id = $request->input('Patient_id');
-        return response()->json(["success" => true, 
+        return response()->json(["success" => true,
                                   "data" => Appointment::getAppointmentPatient($patient_id)
                                 ]);
     }
@@ -97,7 +110,7 @@ class MakeAppointmentController extends Controller
                 "error" => 'notlogin or notvalid'
                 ]);
         $emp_id = $request->input('emp_id');
-        return response()->json(["success" => true, 
+        return response()->json(["success" => true,
                                 "data" => Appointment::getAppointmentDoctor($emp_id)
                                 ]);
     }
@@ -109,7 +122,7 @@ class MakeAppointmentController extends Controller
                 "success" => false,
                 "error" => 'notlogin or notvalid'
                 ]);
-        return response()->json(["success" => true, 
+        return response()->json(["success" => true,
                                  "data" => Appointment::getAppointmentStaff()
                                 ]);
     }
@@ -120,24 +133,24 @@ class MakeAppointmentController extends Controller
                 "success" => false,
                 "error" => 'notlogin or notvalid'
                 ]);
-        return response()->json(["success" => true, 
+        return response()->json(["success" => true,
                                  "data" => Appointment::getLastAppointment($patient_id)
                                 ]);
     }
 
     //------------------------getAllDoctor-------------------------
     public function doctor (){
-        
+
         $getDoctor = [];
-            
+
         $doctors = HospitalEmployee::where('role','Doctor')->where('valid',true)->get();
 
 
         foreach ($doctors as $doctor) {
-           
+
             $getDoctor[] = ['firstname' => $doctor->firstname,
-                            'lastname' => $doctor->lastname, 
-                            'id' => $doctor->emp_id, 
+                            'lastname' => $doctor->lastname,
+                            'id' => $doctor->emp_id,
                             'specialty' => $doctor->specialty];
         }
 

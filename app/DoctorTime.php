@@ -66,46 +66,147 @@ class DoctorTime extends Model
         return  ["success"=>true, "data" =>array($doctorTime)];
     }
 
+    public static function timeToBlock($datetime) {
+        $beginHours = 8;
+
+        $future_hour = intval($datetime->format('H'));
+        // echo 'future_hour', $future_hour, "\n";
+        $future_minute = intval($datetime->format('i'));
+        // echo 'future_minute', $future_minute, "\n";
+
+        $future = (new DateTime())->setTime($future_hour, $future_minute);
+
+        $begin = (new DateTime())->setTime($beginHours, 0);
+
+        $diff = $future->diff($begin);
+        // echo "\n", 'diff:', $diff->i;
+        $diffMinutes = $diff->h * 60 + $diff->i;
+        return $diffMinutes / 15;
+    }
+
+    public static function blockToTime($block, $baseDate = NULL) {
+        $beginHours = 8;
+
+        $hoursPassed = $block / 4;
+        $minutesPassed = ($block % 4) * 15;
+
+        if ($baseDate == NULL) {
+            $baseDate = new DateTime();
+        }
+
+        return $baseDate->setTime($beginHours + $hoursPassed, $minutesPassed);
+    }
+
     //---------------------------getFreeSlotByDoctor-----------------------------
     public static function getFreeSlotByDoctor( $doctor_id ) {
+        $doctorTimes =
+            DoctorTime::where('doctor_id', $doctor_id)
+                ->where('doctorTime_end', '>=', new DateTime())
+                ->get();
+        // echo "doctortimes: \n";
+        // var_dump($doctorTimes->toArray());
 
-        $freeSlot = [];
-        $doctorTimes = DoctorTime::where('doctor_id', $doctor_id)->get();
+        $appointments =
+            Appointment::where('time', '>=', new DateTime())->get();
 
+        // echo "appointmnets: \n";
+        // var_dump($appointments->toArray());
+
+        $freeSlots = [];
+
+        // cerate doctortimes slots
         foreach($doctorTimes as $doctorTime) {
-            $count = 0;
-            $begin = new Datetime($doctorTime->doctorTime_begin);
-            $end = new DateTime($doctorTime->doctorTime_end);
+            $beginTime = $doctorTime->doctorTime_begin;
+            $endTime = $doctorTime->doctorTime_end;
 
-            if ( $begin->format("s") =='00' )
-                $begin->add( new DateInterval('PT0H0M1S'));
+            $datetime = $beginTime;
+            $date = (new DateTime($datetime))->format('Y-m-d');
+            $freeSlots[$date] = array_fill(0, (20 - 8) * 4, false);
 
-            while($begin < $end) {
-                if(Appointment::where('time',$begin)->
-                                where('emp_id',$doctorTime->doctor_id)->first() ){
-                    if($count == 1) {
-                        $count = 0;
-                        $endFree = new DateTime($begin->format("y-m-d H:i:s"));
-                        $endFree->sub( new DateInterval('PT0H0M1S'));
-                        $freeSlot[] = ["doctorTime_end" => new DateTime($endFree->format("y-m-d H:i:s"))];
-                    }
-                }
-                else if($count == 0){
-                    $freeSlot[] = ["doctorTime_begin" => new DateTime($begin->format("y-m-d H:i:s"))];
-                    $count = 1;
-                }
-                $begin->add( new DateInterval('PT0H15M00S'));
-            }
+            $beginBlock = DoctorTime::timeToBlock(new DateTime($beginTime));
+            $endBlock = DoctorTime::timeToBlock(new DateTime($endTime));
 
-            if($count == 1) {
-                $freeSlot[] = ["doctorTime_end" => new DateTime($end->format("y-m-d H:i:s"))];
-                $count = 0;
+            // echo 'beginblock:', $beginBlock, 'endblock:', $endBlock, "\n";
+
+            // set as free
+            for ($i = $beginBlock; $i <= $endBlock; ++$i) {
+                $freeSlots[$date][$i] = true;
             }
         }
 
-        return ["datetime" => $freeSlot,
-                "doctor" => HospitalEmployee::where('emp_id',$doctor_id)->first()
-               ];
+        // echo "freeslots: \n";
+        // var_dump($freeSlots);
+
+        // mark out the unfit
+        foreach($appointments as $appointment) {
+            $datetime = $appointment->time;
+            $date = (new DateTime($datetime))->format('Y-m-d');
+            $block = DoctorTime::timeToBlock(new DateTime($datetime));
+
+            if (isset($freeSlots[$date])
+                && isset($freeSlots[$date][$block])) {
+                $freeSlots[$date][$block] = false;
+            }
+        }
+
+        // echo "after freeslots: \n";
+        // var_dump($freeSlots);
+
+        // make the result
+        $doctor = HospitalEmployee::find($doctor_id);
+        $result = [];
+
+        foreach($freeSlots as $date => $free) {
+            foreach($free as $i => $isFree) {
+                if ($isFree) {
+                    $datetime = DoctorTime::blockToTime($i, new DateTime($date));
+                    $result[] = [
+                        'datetime' => $datetime,
+                        'doctor' => $doctor,
+                    ];
+                }
+            }
+        }
+
+        return $result;
+
+        // $freeSlot = [];
+        // $doctorTimes = DoctorTime::where('doctor_id', $doctor_id)->get();
+
+        // foreach($doctorTimes as $doctorTime) {
+        //     $count = 0;
+        //     $begin = new Datetime($doctorTime->doctorTime_begin);
+        //     $end = new DateTime($doctorTime->doctorTime_end);
+
+        //     if ( $begin->format("s") =='00' )
+        //         $begin->add( new DateInterval('PT0H0M1S'));
+
+        //     while($begin < $end) {
+        //         if(Appointment::where('time',$begin)->
+        //                         where('emp_id',$doctorTime->doctor_id)->first() ){
+        //             if($count == 1) {
+        //                 $count = 0;
+        //                 $endFree = new DateTime($begin->format("y-m-d H:i:s"));
+        //                 $endFree->sub( new DateInterval('PT0H0M1S'));
+        //                 $freeSlot[] = ["doctorTime_end" => new DateTime($endFree->format("y-m-d H:i:s"))];
+        //             }
+        //         }
+        //         else if($count == 0){
+        //             $freeSlot[] = ["doctorTime_begin" => new DateTime($begin->format("y-m-d H:i:s"))];
+        //             $count = 1;
+        //         }
+        //         $begin->add( new DateInterval('PT0H15M00S'));
+        //     }
+
+        //     if($count == 1) {
+        //         $freeSlot[] = ["doctorTime_end" => new DateTime($end->format("y-m-d H:i:s"))];
+        //         $count = 0;
+        //     }
+        // }
+
+        // return ["datetime" => $freeSlot,
+        //         "doctor" => HospitalEmployee::where('emp_id',$doctor_id)->first()
+        //        ];
     }
 
     //---------------------------getFreeSlotBySpecialty-----------------------------
