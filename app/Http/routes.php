@@ -42,6 +42,7 @@ Route::post('/doctor/create-doctor-time','DoctorTimeController@makeDoctorTime');
 Route::post('/doctor/delete-doctor-time/{doctor_time_id}','DoctorTimeController@deleteDoctorTime');
 
 //------HospitalEmployee------
+
 Route::post('/register-employee','HospitalEmployeeController@registerEmployee');
 
 Route::get('/register-employee/username-exists/{username}','HospitalEmployeeController@usernameExist');
@@ -81,7 +82,7 @@ Route::get('/getAppointmentStaff','MakeAppointmentController@getAppointmentStaff
 Route::post('/appointment/make','MakeAppointmentController@makeAppointment');
 
 Route::post('/appointment/delete/{appointment_id}','MakeAppointmentController@deleteAppointment');
- 
+
 Route::get('/doctor','MakeAppointmentController@doctor');
 
 

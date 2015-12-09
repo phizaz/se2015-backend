@@ -28,9 +28,18 @@ class DoctorTimeController extends Controller
                 ]);
 
         $appointments = Appointment::where('emp_id',$doctor_id)->get();
+
+        $appointments_array = [];
+
+        foreach($appointments as $appointment) {
+            $tmp = $appointment->toArray();
+            $tmp['patient'] = $appointment->patient->toArray();
+            $appointments_array[] = $tmp;
+        }
+
         return response()->json([
             'success' => true,
-            'data' => $appointments
+            'data' => $appointments_array,
         ]);
     }
 

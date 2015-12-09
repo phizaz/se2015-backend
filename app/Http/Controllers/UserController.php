@@ -68,7 +68,7 @@ class UserController extends Controller {
         return response()->json([
             'success' => true,
             'data' => array_merge($result, [
-                'appointment' => $appointments
+                'appointments' => $appointments
             ])
         ]);
     }

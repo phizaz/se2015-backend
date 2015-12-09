@@ -12,9 +12,26 @@ class Appointment extends Model
       return $this->belongsTo('App\HospitalEmployee', 'emp_id');
     }
 
+    public function patient() {
+      return $this->belongsTo('App\Patient', 'patient_id');
+    }
+
 	public static function sendWarning($emailPatient, $telPatient, $time) {
 
 	}
+
+    public static function createNextAppointment($doctor_id, $appointment) {
+        $freeSlots = DoctorTime::getFreeSlotByDoctor($doctor_id);
+
+        foreach($freeSlots as $freeSlot) {
+            $datetime = $freeSlot['datetime'];
+            if ($datetime < new \DateTime($appointment->time)) {
+                continue;
+            }
+
+            return Appointment::makeAppointment($doctor_id, $appointment->patient_id, $datetime);
+        }
+    }
     //done
 	// public static function makeAppointment($search_type, $search_string,
  //                                           $emp_id, $patient_id, $datetime) {

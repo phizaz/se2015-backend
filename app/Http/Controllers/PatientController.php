@@ -42,6 +42,7 @@ class PatientController extends Controller
       $nationality = $request->input('nationality');
       $bloodtype = $request->input('bloodtype');
       $tel = $request->input('tel');
+      $email = $request->input('email');
       $remark = $request->input('remark');
 
       if(!$personal_id)
@@ -64,6 +65,8 @@ class PatientController extends Controller
           $error[] = 'bloodtype_not_found';
       if(!$tel)
           $error[] = 'tel_not_found';
+      if(!$email)
+          $error[] = 'email_not_found';
 
       if(sizeof($error)==0) {
 
@@ -79,6 +82,7 @@ class PatientController extends Controller
           'nationality' => $nationality,
           'bloodtype' => $bloodtype,
           'tel' => $tel,
+          'email' => $email,
           'remark' => $remark,
           ]);
 

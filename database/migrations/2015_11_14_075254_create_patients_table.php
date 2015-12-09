@@ -26,13 +26,14 @@ class CreatePatientsTable extends Migration
             $table->string('religion')->nullable();
             $table->string('bloodtype')->nullable();
             $table->string('tel');
+            $table->string('email');
             // status: บอกว่าผู้ป่วยได้ตรวจเสร็จแล้ว และตอนนี้กำลังรอรับยาหรือเปล่า ?
             $table->boolean('status')->default(0);
             $table->string('remark')->nullable();
             $table->integer('priority')->default(0);
             $table->string('photo_extension');
             $table->string('drugAllergic');
-            
+
             $table->timestamps();
         });
     }
