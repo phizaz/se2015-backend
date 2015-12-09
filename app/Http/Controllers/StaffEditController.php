@@ -74,13 +74,12 @@ class StaffEditController extends Controller
                 ]);
         }
 
-        $employee = HospitalEmployee::where('valid',false)
-                    ->select('emp_id','firstname','lastname','tel','email','role','specialty')
+        $employee = HospitalEmployee::where('valid', 0)
                     ->get();
 
         return response()->json([
             "success" => true,
-            "data" => $employee
+            "data" => $employee->toArray()
             ]);
 
     }
