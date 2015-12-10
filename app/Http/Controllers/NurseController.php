@@ -20,8 +20,16 @@ class NurseController extends Controller
         		]);
         }
 
-        $firstname = $request->firsrname;
-        $lastname = $request->lastname;
+        $firstname = $request->input('firstname');
+        $lastname = $request->input('lastname');
+
+        if ($firstname && !$lastname) {
+            $lastname = 'unabletoguess';
+        }
+
+        if (!$firstname && $lastname) {
+            $firstname = 'unabletoguess';
+        }
 
         $patients = Patient::where('firstname','LIKE',"%$firstname%")
                     ->orWhere('lastname','LIKE',"%$lastname%")
@@ -29,22 +37,21 @@ class NurseController extends Controller
                     ->get();
 
         $report = [];
-        foreach ($patients as $temp){
-        	$a = Patient::where('id',$temp->id)->first();
-        	// echo $a;
+        foreach ($patients as $patient){
 
-        	$b = PatientReport::orderBy('report_id','desc')
-        						->where('patient_id',$a->id)
-        						->first();
-        	
-			$c = $temp->toArray();
-        	if(!$b){
-				$c['report'] = [];
-	        }else{
-	        	$c['report'] = $b->toArray();
+        	$patientReport = PatientReport::orderBy('report_id','desc')
+        						->where('patient_id', $patient->id)
+                                ->get();
+
+			$each = $patient->toArray();
+
+        	if (!$patientReport){
+				$each['patientReports'] = [];
+	        } else {
+	        	$each['patientReports'] = $patientReport;
 	        }
 
-	        $report[] = $c;
+	        $report[] = $each;
 
         }
 
@@ -56,7 +63,7 @@ class NurseController extends Controller
     }
 
     public function patientReport(Request $request,$patientId){
-    	
+
     	if(!HospitalEmployee::isNurse()){
         	return response()->json([
         		"success" => false,
@@ -86,15 +93,16 @@ class NurseController extends Controller
     			]);
     	}
 
-    	$patient = new patientReport();
-    	$patient->patient_id = $patientId;
-    	$patient->height = $height;
-    	$patient->weight = $weight;
-    	$patient->pressure = $pressure;
-    	$patient->save();
+    	$patientReport = new PatientReport;
+    	$patientReport->patient_id = $patientId;
+    	$patientReport->height = $height;
+    	$patientReport->weight = $weight;
+    	$patientReport->pressure = $pressure;
+    	$patientReport->save();
 
     	return response()->json([
     		"success" => true,
+            "data" => $patientReport,
  			"meessage" => 'saved record patient'
     		]);
 

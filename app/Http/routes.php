@@ -100,3 +100,7 @@ Route::post('/staff/discard-staff/{emp_id}','StaffEditController@discardStaff');
 //-------NurseController-----------
 Route::get('/nurse/get-patient/','NurseController@getPatient');
 Route::post('/nurse/patient-report/{patient_id}','NurseController@patientReport');
+
+//-------PharmacistController-----------
+Route::get('/pharmacist/get-patient/', 'PharmacistController@getPatient');
+Route::post('/pharmacist/finish/{patient_id}', 'PharmacistController@finish');
