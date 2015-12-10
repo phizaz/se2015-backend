@@ -35,7 +35,6 @@ class StaffEditController extends Controller
 
         $patients = Patient::where('firstname','LIKE',"%$firstname%")
                     ->orWhere('lastname','LIKE',"%$lastname%")
-                    ->select('id','firstname','lastname','birthdate','address','gender','nationality','bloodtype','tel')
                     ->get();
 
         $b = [];
