@@ -29,7 +29,7 @@ class PharmacistController extends Controller
           $each['drugRecords'] =
             DrugRecord::where('patient_id', $patient->id)
               ->where('check', 0)
-              ->where('created_at', '>=', new Date('today'))
+              ->where('created_at', '>=', new \DateTime('today'))
               ->get();
 
           $result[] = $each;
@@ -60,7 +60,7 @@ class PharmacistController extends Controller
 
       $drugs = DrugRecord::where('patient_id', $patient->id)
               ->where('check', 0)
-              ->where('created_at', '>=', new Date('today'))
+              ->where('created_at', '>=', new \DateTime('today'))
               ->get();
 
       foreach($drugs as $drug) {
@@ -69,11 +69,11 @@ class PharmacistController extends Controller
       }
 
       $patient->status = 0;
-      $patinet->save();
+      $patient->save();
 
       return response()->json([
         'success' => true,
-        'patient' => $patient,
+        'data' => $patient->drugRecords,
       ]);
 
     }
