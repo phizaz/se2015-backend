@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\HospitalEmployee;
-use App\drugRecord;
+use App\DrugRecord;
 // use App\Http\Controllers\DateTime;
 use DateTime;
 use App\SymptomReport;
@@ -78,7 +78,7 @@ class DoctorController extends Controller
             ]);
         }
 
-        $drug = new drugRecord();
+        $drug = new DrugRecord;
         $drug->name = $name;
         $drug->quantity = $quantity;
         $drug->remark = $remark;
@@ -124,7 +124,7 @@ class DoctorController extends Controller
             ]);
         }
 
-        $drug = drugRecord::where('drug_id',$drugId)->first();
+        $drug = DrugRecord::where('drug_id',$drugId)->first();
         $drug->name = $name;
         $drug->quantity = $quantity;
         $drug->remark = $remark;
@@ -147,7 +147,7 @@ class DoctorController extends Controller
                 ]);
         }
 
-        $drug = drugRecord::where('drug_id',$drugId)->first();
+        $drug = DrugRecord::where('drug_id',$drugId)->first();
         $drug->delete();
 
         return response()->json([
@@ -184,7 +184,7 @@ class DoctorController extends Controller
             ]);
         }
 
-        $symptom = new SymptomReport();
+        $symptom = new SymptomReport;
         $symptom->report= $report;
         $symptom->patient_id = $patientId;
         $symptom->date = new DateTime('now');
